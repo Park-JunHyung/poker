@@ -25,17 +25,17 @@ public class Evaluator {
         for (Suit key : tempMap.keySet()) {
             if (tempMap.get(key) == 5) {
                 Collections.sort(cardList);
-                if(cardList.get(0).getRank()==1&&
-                   cardList.get(1).getRank()==10&&
-                   cardList.get(2).getRank()==11&&
-                   cardList.get(3).getRank()==12&&
-                   cardList.get(4).getRank()==13){
+                if(cardList.contains(new Card(1,key))&&
+                        cardList.contains(new Card(10,key))&&
+                        cardList.contains(new Card(11,key))&&
+                        cardList.contains(new Card(12,key))&&
+                        cardList.contains(new Card(13,key))){
                     return HandRank.RoyalStraightFlush;
-                }else if(cardList.get(0).getRank()==1&&
-                        cardList.get(1).getRank()==2&&
-                        cardList.get(2).getRank()==3&&
-                        cardList.get(3).getRank()==4&&
-                        cardList.get(4).getRank()==5){
+                }else if(cardList.contains(new Card(1,key))&&
+                        cardList.contains(new Card(2,key))&&
+                        cardList.contains(new Card(3,key))&&
+                        cardList.contains(new Card(4,key))&&
+                        cardList.contains(new Card(5,key))){
                     return HandRank.BackStraughtFlush;
                 }
                 return HandRank.Flush;
