@@ -10,12 +10,9 @@ public enum HandRank {
     TwoPair,
     Triple,
     Straight,
-    BackStraight,
-    Mountine,
     Flush,
     FulllHouse,
     FourCard,
     StraightFlush,
-    BackStraightFlush,
     RoyalStraightFlush;
 }

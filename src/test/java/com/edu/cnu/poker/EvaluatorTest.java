@@ -17,19 +17,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class EvaluatorTest {
 
     @Test
-    public void SUIT가_5개가동일하면_플러쉬다() {
-        Evaluator evaluator = new Evaluator();
-        List<Card> cardList = Arrays.asList(
-                new Card(1, Suit.CLUBS),
-                new Card(4,Suit.CLUBS),
-                new Card(8,Suit.CLUBS),
-                new Card(13,Suit.CLUBS),
-                new Card(2,Suit.CLUBS)
-        );
-        HandRank result = evaluator.evaluate(cardList);
-        assertThat(result, is(HandRank.Flush));
-    }
-    @Test
     public void SUIT가_같고_숫자가_A_K_Q_J_10_이면_로열스트레이트플러시() {
         Evaluator evaluator = new Evaluator();
         List<Card> cardList = Arrays.asList(
@@ -43,19 +30,6 @@ public class EvaluatorTest {
         assertThat(result, is(HandRank.RoyalStraightFlush));
     }
     @Test
-    public void SUIT가_같고_숫자가_A_2_3_4_5_이면_백스트레이트플러시() {
-        Evaluator evaluator = new Evaluator();
-        List<Card> cardList = Arrays.asList(
-                new Card(1, Suit.CLUBS),
-                new Card(2,Suit.CLUBS),
-                new Card(3,Suit.CLUBS),
-                new Card(4,Suit.CLUBS),
-                new Card(5,Suit.CLUBS)
-        );
-        HandRank result = evaluator.evaluate(cardList);
-        assertThat(result, is(HandRank.BackStraightFlush));
-    }
-    @Test
     public void SUIT가_같고_숫자가_연속되면_스트레이트플러시() {
         Evaluator evaluator = new Evaluator();
         List<Card> cardList = Arrays.asList(
@@ -67,6 +41,19 @@ public class EvaluatorTest {
         );
         HandRank result = evaluator.evaluate(cardList);
         assertThat(result, is(HandRank.StraightFlush));
+    }
+    @Test
+    public void SUIT가_5개가동일하면_플러쉬다() {
+        Evaluator evaluator = new Evaluator();
+        List<Card> cardList = Arrays.asList(
+                new Card(1, Suit.CLUBS),
+                new Card(4,Suit.CLUBS),
+                new Card(8,Suit.CLUBS),
+                new Card(13,Suit.CLUBS),
+                new Card(2,Suit.CLUBS)
+        );
+        HandRank result = evaluator.evaluate(cardList);
+        assertThat(result, is(HandRank.Flush));
     }
 
 }
