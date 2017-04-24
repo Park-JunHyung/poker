@@ -120,6 +120,32 @@ public class EvaluatorTest {
         HandRank result = evaluator.evaluate(cardList);
         assertThat(result, is(HandRank.TwoPair));
     }
+    @Test
+    public void 같은_카드가_2개면_원페어이다() {
+        Evaluator evaluator = new Evaluator();
+        List<Card> cardList = Arrays.asList(
+                new Card(2, Suit.CLUBS),
+                new Card(13,Suit.SPADES),
+                new Card(3,Suit.DIAMONDS),
+                new Card(1,Suit.HEARTS),
+                new Card(2,Suit.CLUBS)
+        );
+        HandRank result = evaluator.evaluate(cardList);
+        assertThat(result, is(HandRank.OnePair));
+    }
+    @Test
+    public void 아무것도_아니면_탑이다() {
+        Evaluator evaluator = new Evaluator();
+        List<Card> cardList = Arrays.asList(
+                new Card(2, Suit.CLUBS),
+                new Card(13,Suit.SPADES),
+                new Card(3,Suit.DIAMONDS),
+                new Card(1,Suit.HEARTS),
+                new Card(4,Suit.CLUBS)
+        );
+        HandRank result = evaluator.evaluate(cardList);
+        assertThat(result, is(HandRank.Top));
+    }
 
 
 }

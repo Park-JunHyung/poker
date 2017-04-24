@@ -38,11 +38,19 @@ public class Evaluator {
             return HandRank.Triple;
         }else if(isTwoPair(rankMap) ){
             return HandRank.TwoPair;
+        }else if(isOnePair(rankMap)){
+            return  HandRank.OnePair;
         }
+        return HandRank.Top;
+    }
 
-
-        return HandRank.Nothing;
-
+    private boolean isOnePair(Map<Integer, Integer> rankMap) {
+        for (Integer key : rankMap.keySet()) {
+            if (rankMap.get(key) == 2) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean isTwoPair(Map<Integer, Integer> rankMap) {
@@ -165,7 +173,6 @@ public class Evaluator {
                 tempMap.put(card.getRank(), new Integer(1));
             }
         }
-
         return tempMap;
     }
 
