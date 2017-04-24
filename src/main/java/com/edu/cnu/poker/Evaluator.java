@@ -13,35 +13,43 @@ public class Evaluator {
     public HandRank evaluate(List<Card> cardList) {
         Map<Suit, Integer> suitMap = makeSuitMap(cardList);
         Map<Integer, Integer> rankMap = makeRankMap(cardList);
-
         Suit flushKey = null;
-
+        HandRank result = HandRank.Top;
         for (Suit key : suitMap.keySet()) {
             if (suitMap.get(key) >= 5) {
                 flushKey = key;
             }
         }
 
+        if(isOnePair(rankMap)){
+            result=HandRank.OnePair;
+        }
+        if(isTwoPair(rankMap) ){
+            result=HandRank.TwoPair;
+        }
+        if(isTriple(rankMap) ){
+            result=HandRank.Triple;
+        }
+        if (isStraight(cardList, rankMap)) {
+            result=HandRank.Straight;
+        }
+        if (isFlush(cardList, flushKey)) {
+            result=HandRank.Flush;
+        }
+        if (isFullHouse(cardList, rankMap)) {
+            result=HandRank.FullHouse;
+        }
+        if (isFourCard(cardList, rankMap)) {
+            result= HandRank.FourCard;
+        }
+        if (isStraightFlush(cardList, flushKey)) {
+            result= HandRank.StraightFlush;
+        }
         if (isRoyalStraightFlush(cardList, flushKey)) {
             return HandRank.RoyalStraightFlush;
-        } else if (isStraightFlush(cardList, flushKey)) {
-            return HandRank.StraightFlush;
-        } else if (isFourCard(cardList, rankMap)) {
-            return HandRank.FourCard;
-        } else if (isFullHouse(cardList, rankMap)) {
-            return HandRank.FullHouse;
-        } else if (isFlush(cardList, flushKey)) {
-            return HandRank.Flush;
-        } else if (isStraight(cardList, rankMap)) {
-            return HandRank.Straight;
-        }else if(isTriple(rankMap) ){
-            return HandRank.Triple;
-        }else if(isTwoPair(rankMap) ){
-            return HandRank.TwoPair;
-        }else if(isOnePair(rankMap)){
-            return  HandRank.OnePair;
         }
-        return HandRank.Top;
+
+        return result;
     }
 
     private boolean isOnePair(Map<Integer, Integer> rankMap) {
@@ -132,7 +140,7 @@ public class Evaluator {
         if (key == null) return false;
         Collections.sort(cardList);
         for (int i = 0; i < 3; i++) {
-            if (cardList.get(i).getRank() > 10) break;
+            if (cardList.get(i).getRank() > 9) break;
             if (cardList.containsAll(
                     Arrays.asList(
                             new Card(cardList.get(i).getRank(), key),
