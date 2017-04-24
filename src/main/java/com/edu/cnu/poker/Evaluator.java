@@ -36,9 +36,20 @@ public class Evaluator {
                         cardList.contains(new Card(3,key))&&
                         cardList.contains(new Card(4,key))&&
                         cardList.contains(new Card(5,key))){
-                    return HandRank.BackStraughtFlush;
+                    return HandRank.BackStraightFlush;
+                }else if(cardList.containsAll(
+                        Arrays.asList(
+                        new Card(cardList.get(0).getRank(), key),
+                        new Card(cardList.get(0).getRank()+1, key),
+                        new Card(cardList.get(0).getRank()+2, key),
+                        new Card(cardList.get(0).getRank()+3, key),
+                        new Card(cardList.get(0).getRank()+4, key)
+                ))){
+                    return HandRank.StraightFlush;
+                }else{
+                    return HandRank.Flush;
                 }
-                return HandRank.Flush;
+
             }
         }
 

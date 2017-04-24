@@ -30,7 +30,7 @@ public class EvaluatorTest {
         assertThat(result, is(HandRank.Flush));
     }
     @Test
-    public void SUIT가_같고_카드가_A_K_Q_J_10_이면_로열스트레이트플러시() {
+    public void SUIT가_같고_숫자가_A_K_Q_J_10_이면_로열스트레이트플러시() {
         Evaluator evaluator = new Evaluator();
         List<Card> cardList = Arrays.asList(
                 new Card(1, Suit.CLUBS),
@@ -43,7 +43,7 @@ public class EvaluatorTest {
         assertThat(result, is(HandRank.RoyalStraightFlush));
     }
     @Test
-    public void SUIT가_같고_카드가_A_2_3_4_5_이면_백스트레이트플러시() {
+    public void SUIT가_같고_숫자가_A_2_3_4_5_이면_백스트레이트플러시() {
         Evaluator evaluator = new Evaluator();
         List<Card> cardList = Arrays.asList(
                 new Card(1, Suit.CLUBS),
@@ -53,7 +53,20 @@ public class EvaluatorTest {
                 new Card(5,Suit.CLUBS)
         );
         HandRank result = evaluator.evaluate(cardList);
-        assertThat(result, is(HandRank.BackStraughtFlush));
+        assertThat(result, is(HandRank.BackStraightFlush));
+    }
+    @Test
+    public void SUIT가_같고_숫자가_연속되면_스트레이트플러시() {
+        Evaluator evaluator = new Evaluator();
+        List<Card> cardList = Arrays.asList(
+                new Card(2, Suit.CLUBS),
+                new Card(3,Suit.CLUBS),
+                new Card(4,Suit.CLUBS),
+                new Card(5,Suit.CLUBS),
+                new Card(6,Suit.CLUBS)
+        );
+        HandRank result = evaluator.evaluate(cardList);
+        assertThat(result, is(HandRank.StraightFlush));
     }
 
 }

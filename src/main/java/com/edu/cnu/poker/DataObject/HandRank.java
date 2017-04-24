@@ -16,6 +16,6 @@ public enum HandRank {
     FulllHouse,
     FourCard,
     StraightFlush,
-    BackStraughtFlush,
+    BackStraightFlush,
     RoyalStraightFlush;
 }
