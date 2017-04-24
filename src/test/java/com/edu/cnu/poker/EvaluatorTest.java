@@ -81,5 +81,19 @@ public class EvaluatorTest {
         HandRank result = evaluator.evaluate(cardList);
         assertThat(result, is(HandRank.FullHouse));
     }
+    @Test
+    public void 숫자가_5장_연속되면_스트레이트다() {
+        Evaluator evaluator = new Evaluator();
+        List<Card> cardList = Arrays.asList(
+                new Card(2, Suit.CLUBS),
+                new Card(3,Suit.SPADES),
+                new Card(4,Suit.DIAMONDS),
+                new Card(5,Suit.HEARTS),
+                new Card(6,Suit.CLUBS)
+        );
+        HandRank result = evaluator.evaluate(cardList);
+        assertThat(result, is(HandRank.Straight));
+    }
+
 
 }

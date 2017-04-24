@@ -26,13 +26,14 @@ public class Evaluator {
             return HandRank.RoyalStraightFlush;
         } else if (isStraightFlush(cardList, flushKey)) {
             return HandRank.StraightFlush;
-        }else if(isFourCard(cardList,rankMap)){
+        } else if (isFourCard(cardList, rankMap)) {
             return HandRank.FourCard;
-        }else if(isFullHouse(cardList,rankMap)){
+        } else if (isFullHouse(cardList, rankMap)) {
             return HandRank.FullHouse;
-        }
-        else if (isFlush(cardList,flushKey)) {
+        } else if (isFlush(cardList, flushKey)) {
             return HandRank.Flush;
+        } else if (isStraight(cardList, rankMap)) {
+            return HandRank.Straight;
         }
 
 
@@ -40,18 +41,33 @@ public class Evaluator {
 
     }
 
+    private boolean isStraight(List<Card> cardList, Map<Integer, Integer> rankMap) {
+        Collections.sort(cardList);
+        for (int i = 0; i < 3; i++) {
+            if (cardList.get(i).getRank() > 10) break;
+            if (rankMap.containsKey(cardList.get(i).getRank()) &&
+                    rankMap.containsKey(cardList.get(i).getRank()+1)&&
+                    rankMap.containsKey(cardList.get(i).getRank()+2)&&
+                    rankMap.containsKey(cardList.get(i).getRank()+3)&&
+                    rankMap.containsKey(cardList.get(i).getRank()+4)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private boolean isFullHouse(List<Card> cardList, Map<Integer, Integer> rankMap) {
-        boolean triple =false;
-        boolean onePair=false;
+        boolean triple = false;
+        boolean onePair = false;
 
         for (Integer key : rankMap.keySet()) {
             if (rankMap.get(key) == 3) {
-                triple=true;
-            }else if(rankMap.get(key) == 2) {
+                triple = true;
+            } else if (rankMap.get(key) == 2) {
                 onePair = true;
             }
         }
-        return triple&&onePair;
+        return triple && onePair;
     }
 
     private boolean isFourCard(List<Card> cardList, Map<Integer, Integer> rankMap) {
