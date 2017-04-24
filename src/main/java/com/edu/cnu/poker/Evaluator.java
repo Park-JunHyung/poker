@@ -37,24 +37,31 @@ public class Evaluator {
                         cardList.contains(new Card(4,key))&&
                         cardList.contains(new Card(5,key))){
                     return HandRank.BackStraightFlush;
-                }else if(cardList.containsAll(
-                        Arrays.asList(
-                        new Card(cardList.get(0).getRank(), key),
-                        new Card(cardList.get(0).getRank()+1, key),
-                        new Card(cardList.get(0).getRank()+2, key),
-                        new Card(cardList.get(0).getRank()+3, key),
-                        new Card(cardList.get(0).getRank()+4, key)
-                ))){
+                }else if(isStraightFlush(cardList,key)){
                     return HandRank.StraightFlush;
                 }else{
                     return HandRank.Flush;
                 }
-
             }
         }
-
         return HandRank.Nothing;
 
+    }
+    private Boolean isStraightFlush(List<Card> cardList, Suit key){
+        for(int i=0;i<9;i++){
+            if(cardList.get(i).getRank()>10) break;;
+            if(cardList.containsAll(
+                    Arrays.asList(
+                            new Card(cardList.get(i).getRank(), key),
+                            new Card(cardList.get(i).getRank()+1, key),
+                            new Card(cardList.get(i).getRank()+2, key),
+                            new Card(cardList.get(i).getRank()+3, key),
+                            new Card(cardList.get(i).getRank()+4, key)
+                    ))) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
