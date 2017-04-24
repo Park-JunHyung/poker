@@ -11,7 +11,7 @@ public enum HandRank {
     Triple,
     Straight,
     Flush,
-    FulllHouse,
+    FullHouse,
     FourCard,
     StraightFlush,
     RoyalStraightFlush;

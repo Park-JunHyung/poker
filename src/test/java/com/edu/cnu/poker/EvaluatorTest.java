@@ -68,5 +68,18 @@ public class EvaluatorTest {
         HandRank result = evaluator.evaluate(cardList);
         assertThat(result, is(HandRank.FourCard));
     }
+    @Test
+    public void 트리플과_원페어가_동시에_있으면_풀하우스다() {
+        Evaluator evaluator = new Evaluator();
+        List<Card> cardList = Arrays.asList(
+                new Card(1, Suit.CLUBS),
+                new Card(2,Suit.SPADES),
+                new Card(1,Suit.DIAMONDS),
+                new Card(1,Suit.HEARTS),
+                new Card(2,Suit.CLUBS)
+        );
+        HandRank result = evaluator.evaluate(cardList);
+        assertThat(result, is(HandRank.FullHouse));
+    }
 
 }

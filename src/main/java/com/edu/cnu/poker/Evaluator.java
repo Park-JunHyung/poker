@@ -28,13 +28,30 @@ public class Evaluator {
             return HandRank.StraightFlush;
         }else if(isFourCard(cardList,rankMap)){
             return HandRank.FourCard;
-        }else if (isFlush(cardList,flushKey)) {
+        }else if(isFullHouse(cardList,rankMap)){
+            return HandRank.FullHouse;
+        }
+        else if (isFlush(cardList,flushKey)) {
             return HandRank.Flush;
         }
 
 
         return HandRank.Nothing;
 
+    }
+
+    private boolean isFullHouse(List<Card> cardList, Map<Integer, Integer> rankMap) {
+        boolean triple =false;
+        boolean onePair=false;
+
+        for (Integer key : rankMap.keySet()) {
+            if (rankMap.get(key) == 3) {
+                triple=true;
+            }else if(rankMap.get(key) == 2) {
+                onePair = true;
+            }
+        }
+        return triple&&onePair;
     }
 
     private boolean isFourCard(List<Card> cardList, Map<Integer, Integer> rankMap) {
