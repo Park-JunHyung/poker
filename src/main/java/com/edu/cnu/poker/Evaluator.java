@@ -36,11 +36,24 @@ public class Evaluator {
             return HandRank.Straight;
         }else if(isTriple(rankMap) ){
             return HandRank.Triple;
+        }else if(isTwoPair(rankMap) ){
+            return HandRank.TwoPair;
         }
 
 
         return HandRank.Nothing;
 
+    }
+
+    private boolean isTwoPair(Map<Integer, Integer> rankMap) {
+        int count=0;
+        for (Integer key : rankMap.keySet()) {
+            if (rankMap.get(key) == 2) {
+                count++;
+            }
+        }
+        if(count==2) return true;
+        return false;
     }
 
     private boolean isTriple(Map<Integer, Integer> rankMap) {

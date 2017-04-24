@@ -107,6 +107,19 @@ public class EvaluatorTest {
         HandRank result = evaluator.evaluate(cardList);
         assertThat(result, is(HandRank.Triple));
     }
+    @Test
+    public void 페어가_2개면_투페어이다() {
+        Evaluator evaluator = new Evaluator();
+        List<Card> cardList = Arrays.asList(
+                new Card(2, Suit.CLUBS),
+                new Card(13,Suit.SPADES),
+                new Card(1,Suit.DIAMONDS),
+                new Card(1,Suit.HEARTS),
+                new Card(2,Suit.CLUBS)
+        );
+        HandRank result = evaluator.evaluate(cardList);
+        assertThat(result, is(HandRank.TwoPair));
+    }
 
 
 }
