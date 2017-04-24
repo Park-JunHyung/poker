@@ -1,14 +1,16 @@
 package com.edu.cnu.poker;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.edu.cnu.poker.DataObject.Card;
+import com.edu.cnu.poker.DataObject.HandRank;
+import com.edu.cnu.poker.DataObject.Suit;
+
+import java.util.*;
 
 /**
  * Created by cse on 2017-04-17.
  */
 public class Evaluator {
-    public String evaluate(List<Card> cardList) {
+    public HandRank evaluate(List<Card> cardList) {
         Map<Suit, Integer> tempMap = new HashMap<Suit, Integer>();
 
         for (Card card : cardList) {
@@ -20,12 +22,46 @@ public class Evaluator {
                 tempMap.put(card.getSuit(), new Integer(1));
             }
         }
-
         for (Suit key : tempMap.keySet()) {
             if (tempMap.get(key) == 5) {
-                return "FLUSH";
+                Collections.sort(cardList);
+                if(cardList.contains(new Card(1,key))&&
+                        cardList.contains(new Card(10,key))&&
+                        cardList.contains(new Card(11,key))&&
+                        cardList.contains(new Card(12,key))&&
+                        cardList.contains(new Card(13,key))){
+                    return HandRank.RoyalStraightFlush;
+                }else if(cardList.contains(new Card(1,key))&&
+                        cardList.contains(new Card(2,key))&&
+                        cardList.contains(new Card(3,key))&&
+                        cardList.contains(new Card(4,key))&&
+                        cardList.contains(new Card(5,key))){
+                    return HandRank.BackStraightFlush;
+                }else if(isStraightFlush(cardList,key)){
+                    return HandRank.StraightFlush;
+                }else{
+                    return HandRank.Flush;
+                }
             }
         }
-        return "NOTHING";
+        return HandRank.Nothing;
+
     }
+    private Boolean isStraightFlush(List<Card> cardList, Suit key){
+        for(int i=0;i<9;i++){
+            if(cardList.get(i).getRank()>10) break;;
+            if(cardList.containsAll(
+                    Arrays.asList(
+                            new Card(cardList.get(i).getRank(), key),
+                            new Card(cardList.get(i).getRank()+1, key),
+                            new Card(cardList.get(i).getRank()+2, key),
+                            new Card(cardList.get(i).getRank()+3, key),
+                            new Card(cardList.get(i).getRank()+4, key)
+                    ))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

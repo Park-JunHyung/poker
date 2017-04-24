@@ -1,4 +1,8 @@
-package com.edu.cnu.poker;
+package com.edu.cnu.poker.DataObject;
+
+import com.edu.cnu.poker.DataObject.Card;
+import com.edu.cnu.poker.DataObject.Deck;
+import com.edu.cnu.poker.PokerType;
 
 import java.util.ArrayList;
 import java.util.List;

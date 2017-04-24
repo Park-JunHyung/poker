@@ -1,6 +1,6 @@
-package com.edu.cnu.poker;
+package com.edu.cnu.poker.DataObject;
 
-import lombok.AllArgsConstructor;
+import com.edu.cnu.poker.UserException.NoSuchRankException;
 import lombok.Data;
 
 /**
