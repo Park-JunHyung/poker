@@ -34,11 +34,22 @@ public class Evaluator {
             return HandRank.Flush;
         } else if (isStraight(cardList, rankMap)) {
             return HandRank.Straight;
+        }else if(isTriple(rankMap) ){
+            return HandRank.Triple;
         }
 
 
         return HandRank.Nothing;
 
+    }
+
+    private boolean isTriple(Map<Integer, Integer> rankMap) {
+        for (Integer key : rankMap.keySet()) {
+            if (rankMap.get(key) == 3) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean isStraight(List<Card> cardList, Map<Integer, Integer> rankMap) {

@@ -94,6 +94,19 @@ public class EvaluatorTest {
         HandRank result = evaluator.evaluate(cardList);
         assertThat(result, is(HandRank.Straight));
     }
+    @Test
+    public void 숫자가_같은_카드_3개면_트리플이다() {
+        Evaluator evaluator = new Evaluator();
+        List<Card> cardList = Arrays.asList(
+                new Card(1, Suit.CLUBS),
+                new Card(13,Suit.SPADES),
+                new Card(1,Suit.DIAMONDS),
+                new Card(1,Suit.HEARTS),
+                new Card(2,Suit.CLUBS)
+        );
+        HandRank result = evaluator.evaluate(cardList);
+        assertThat(result, is(HandRank.Triple));
+    }
 
 
 }
