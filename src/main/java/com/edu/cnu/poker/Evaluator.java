@@ -17,7 +17,7 @@ public class Evaluator {
         Suit flushKey = null;
 
         for (Suit key : suitMap.keySet()) {
-            if (suitMap.get(key) <= 5) {
+            if (suitMap.get(key) >= 5) {
                 flushKey = key;
             }
         }
@@ -26,13 +26,24 @@ public class Evaluator {
             return HandRank.RoyalStraightFlush;
         } else if (isStraightFlush(cardList, flushKey)) {
             return HandRank.StraightFlush;
-        } else if (isFlush(cardList,flushKey)) {
+        }else if(isFourCard(cardList,rankMap)){
+            return HandRank.FourCard;
+        }else if (isFlush(cardList,flushKey)) {
             return HandRank.Flush;
         }
 
 
         return HandRank.Nothing;
 
+    }
+
+    private boolean isFourCard(List<Card> cardList, Map<Integer, Integer> rankMap) {
+        for (Integer key : rankMap.keySet()) {
+            if (rankMap.get(key) >= 4) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean isFlush(List<Card> cardList, Suit key) {
