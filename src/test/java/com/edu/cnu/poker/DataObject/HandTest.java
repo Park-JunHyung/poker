@@ -1,7 +1,8 @@
-package com.edu.cnu.poker;
+package com.edu.cnu.poker.DataObject;
 
 import com.edu.cnu.poker.DataObject.Deck;
 import com.edu.cnu.poker.DataObject.Hand;
+import com.edu.cnu.poker.PokerType;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;

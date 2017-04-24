@@ -1,4 +1,4 @@
-package com.edu.cnu.poker;
+package com.edu.cnu.poker.DataObject;
 
 import com.edu.cnu.poker.DataObject.Card;
 import com.edu.cnu.poker.DataObject.Suit;
