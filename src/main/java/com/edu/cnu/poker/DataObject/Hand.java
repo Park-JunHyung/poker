@@ -1,7 +1,7 @@
 package com.edu.cnu.poker.DataObject;
 
-import lombok.Data;
 
+import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 
