@@ -4,8 +4,8 @@ package com.edu.cnu.poker.DataObject;
  * Created by JSH on 2017-04-23.
  */
 public enum HandRank {
-    Top(1),                 //  숫자우선,모양차선
-    OnePair(2),             //  숫자우선,모양차선
+    Top(1),
+    OnePair(2),
     TwoPair(3),
     Triple(4),
     Straight(5),

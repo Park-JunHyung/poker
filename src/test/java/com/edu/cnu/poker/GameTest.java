@@ -27,11 +27,11 @@ public class GameTest {
     }
 
     @Test
-    public void 까진_패가_높은사람부터_시작(){
+    public void 까진_패를_비교후에_높은사람부터_시작(){
         Game game=new Game(10000,PokerType.SEVEN);
         game.enterNewGame(100,3);
-        game.evaluating(game.getPlayer().getHand().getDisplayedCard(),game.getComputer().getHand().getDisplayedCard());
-        assertThat(game.getPlayer().getMoney(),is(9900));
+        int result=game.evaluating(game.getPlayer().getHand().getDisplayedCard(),game.getComputer().getHand().getDisplayedCard());
+        assertThat(result,is(10));
 
     }
     /*

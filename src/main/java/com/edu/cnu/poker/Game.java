@@ -3,6 +3,7 @@ package com.edu.cnu.poker;
 import com.edu.cnu.poker.DataObject.*;
 import lombok.Data;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
@@ -17,6 +18,7 @@ public class Game {
     private Evaluator evaluator;
     private int SumOfMoney=0;
     public Game(int money,PokerType pokerType){
+        this.evaluator=new Evaluator();
         Deck deck=new Deck(1);
         this.player=new Player(money,new Hand(deck, pokerType));
         this.computer=new Player(money,new Hand(deck,pokerType));
@@ -31,7 +33,7 @@ public class Game {
         player.getHand().MyCard();
         computer.getHand().OpponentCard();
     }
-
+    /*
     public void betting(int turn) {
 
         Scanner bet = new Scanner(System.in);
@@ -63,11 +65,21 @@ public class Game {
             }
         }
         System.out.println("현재 판돈 : "+SumOfMoney);
-    }
+    }*/
+    /*
     public void SevenPokerGame(int startMoney){
         enterNewGame(startMoney,3);
-        //betting();
-    }
+        betting(evaluating(player.getHand().getDisplayedCard(),player.getHand().getDisplayedCard()));
+        //오프닝 후 첫번째 베팅
+        for (int i=0;i>7;i++){
+            System.out.println("[ 현재 판돈 : "+SumOfMoney+"만원 ] [ 유저 소지금 : "+player.getMoney()+"만원] [ 컴퓨터 소지금 : "+computer.getMoney()+"만원 ]");
+            player.getHand().CardAddtion(1);
+            computer.getHand().CardAddtion(1);
+            player.getHand().MyCard();
+            computer.getHand().OpponentCard();
+            betting(evaluating(player.getHand().getDisplayedCard(),player.getHand().getDisplayedCard()));
+        }
+    }*/
 
     public int evaluating(List<Card> playerList, List<Card> computerList) {
         int playerRank=evaluator.evaluate(playerList).getRankOfHand();
@@ -75,7 +87,8 @@ public class Game {
         if (playerRank>computerRank){
             return 0;
         }else if (playerRank==computerRank){
-            return 1;
+            int moreValuableRank=0;//족보가 같을경우 숫자-모양을 비교후 리턴받은 값
+            return moreValuableRank;
         }else
             return 1;
     }
