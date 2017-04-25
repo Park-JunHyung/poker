@@ -1,11 +1,9 @@
 package com.edu.cnu.poker;
 
-import com.edu.cnu.poker.DataObject.Deck;
-import com.edu.cnu.poker.DataObject.Hand;
-import com.edu.cnu.poker.DataObject.Player;
-import com.edu.cnu.poker.DataObject.PokerType;
+import com.edu.cnu.poker.DataObject.*;
 import lombok.Data;
 
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -27,16 +25,15 @@ public class Game {
         System.out.println("New Game Start");
         SumOfMoney+=player.betting(startMoney);
         SumOfMoney+=computer.betting(startMoney);
+        System.out.println("[ 현재 판돈 : "+SumOfMoney+"만원 ] [ 유저 소지금 : "+player.getMoney()+"만원] [ 컴퓨터 소지금 : "+computer.getMoney()+"만원 ]");
         player.getHand().CardAddtion(PokerType);
         computer.getHand().CardAddtion(PokerType);
-        System.out.println("[ 현재 판돈 : "+SumOfMoney+"만원 ] [ 유저 소지금 : "+player.getMoney()+"만원] [ 컴퓨터 소지금 : "+computer.getMoney()+"만원 ]");
+        player.getHand().MyCard();
+        computer.getHand().OpponentCard();
     }
 
+    public void betting(int turn) {
 
-
-    public void betting() {
-        boolean evaluate = true;//오픈된 카드 순위__구현안됨
-        int turn = (evaluate) ? 1 : 0;//테이블에 오픈된 카드에 따른 우선순위 설정 1(유저) 0(컴퓨터)
         Scanner bet = new Scanner(System.in);
         player.getHand().MyCard();
         computer.getHand().OpponentCard();
@@ -67,7 +64,19 @@ public class Game {
         }
         System.out.println("현재 판돈 : "+SumOfMoney);
     }
-    public void SevenPokerGame(){
-        betting();
+    public void SevenPokerGame(int startMoney){
+        enterNewGame(startMoney,3);
+        //betting();
+    }
+
+    public int evaluating(List<Card> playerList, List<Card> computerList) {
+        int playerRank=evaluator.evaluate(playerList).getRankOfHand();
+        int computerRank=evaluator.evaluate(computerList).getRankOfHand();
+        if (playerRank>computerRank){
+            return 0;
+        }else if (playerRank==computerRank){
+            return 1;
+        }else
+            return 1;
     }
 }
