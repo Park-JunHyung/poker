@@ -26,4 +26,14 @@ public class HandTest {
         Hand hand = new Hand(deck, PokerType.SEVEN);
         assertThat(hand.getTotalCard(), is(7));
     }
+
+    @Test
+    public void 세븐포커는_처음에_두개를_안보여주고_마지막_한개를_안보여준다(){
+        Deck deck = new Deck(1);
+        Hand hand1 = new Hand(deck, PokerType.SEVEN);
+        Hand hand2 = new Hand(deck, PokerType.SEVEN);
+        hand1.OpponentCard();
+        hand2.MyCard();
+
+    }
 }
