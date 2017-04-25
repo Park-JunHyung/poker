@@ -14,7 +14,6 @@ public class Evaluator {
         Map<Suit, Integer> suitMap = makeSuitMap(cardList);
         Map<Integer, Integer> rankMap = makeRankMap(cardList);
         Suit flushKey = null;
-        HandRank result = HandRank.Top;
 
         for (Suit key : suitMap.keySet()) {
             if (suitMap.get(key) >= 5) {
@@ -22,48 +21,38 @@ public class Evaluator {
             }
         }
 
-        if(isOnePair(rankMap)){
-            result=HandRank.OnePair;
-        }
-        if(isTwoPair(rankMap) ){
-            result=HandRank.TwoPair;
-        }
-        if(isTriple(rankMap) ){
-            result=HandRank.Triple;
-        }
-        if (isStraight(cardList, rankMap)) {
-            result=HandRank.Straight;
-        }
-        if(isMountain(rankMap)){
-            result = HandRank.Mountain;
-        }
-        if (isFlush(cardList, flushKey)) {
-            result=HandRank.Flush;
-        }
-        if (isFullHouse(rankMap)) {
-            result=HandRank.FullHouse;
-        }
-        if (isFourCard(cardList, rankMap)) {
-            result= HandRank.FourCard;
-        }
-        if (isStraightFlush(cardList, flushKey)) {
-            result= HandRank.StraightFlush;
-        }
         if (isRoyalStraightFlush(cardList, flushKey)) {
             return HandRank.RoyalStraightFlush;
+        } else if (isStraightFlush(cardList, flushKey)) {
+            return HandRank.StraightFlush;
+        } else if (isFourCard(cardList, rankMap)) {
+            return HandRank.FourCard;
+        } else if (isFullHouse(rankMap)) {
+            return HandRank.FullHouse;
+        } else if (isFlush(cardList, flushKey)) {
+            return HandRank.Flush;
+        } else if (isMountain(rankMap)) {
+            return HandRank.Mountain;
+        } else if (isStraight(cardList, rankMap)) {
+            return HandRank.Straight;
+        } else if (isTriple(rankMap)) {
+            return HandRank.Triple;
+        } else if (isTwoPair(rankMap)) {
+            return HandRank.TwoPair;
+        } else if (isOnePair(rankMap)) {
+            return HandRank.OnePair;
         }
-
-        return result;
+        return HandRank.Top;
     }
 
-    private boolean isMountain( Map<Integer, Integer> rankMap) {
-            if (rankMap.containsKey(1) &&
-                    rankMap.containsKey(10)&&
-                    rankMap.containsKey(11)&&
-                    rankMap.containsKey(12)&&
-                    rankMap.containsKey(12)) {
-                return true;
-            }
+    private boolean isMountain(Map<Integer, Integer> rankMap) {
+        if (rankMap.containsKey(1) &&
+                rankMap.containsKey(10) &&
+                rankMap.containsKey(11) &&
+                rankMap.containsKey(12) &&
+                rankMap.containsKey(12)) {
+            return true;
+        }
 
         return false;
     }
@@ -78,13 +67,13 @@ public class Evaluator {
     }
 
     private boolean isTwoPair(Map<Integer, Integer> rankMap) {
-        int count=0;
+        int count = 0;
         for (Integer key : rankMap.keySet()) {
             if (rankMap.get(key) == 2) {
                 count++;
             }
         }
-        if(count==2) return true;
+        if (count == 2) return true;
         return false;
     }
 
@@ -102,10 +91,10 @@ public class Evaluator {
         for (int i = 0; i < 3; i++) {
             if (cardList.get(i).getRank() > 10) break;
             if (rankMap.containsKey(cardList.get(i).getRank()) &&
-                    rankMap.containsKey(cardList.get(i).getRank()+1)&&
-                    rankMap.containsKey(cardList.get(i).getRank()+2)&&
-                    rankMap.containsKey(cardList.get(i).getRank()+3)&&
-                    rankMap.containsKey(cardList.get(i).getRank()+4)) {
+                    rankMap.containsKey(cardList.get(i).getRank() + 1) &&
+                    rankMap.containsKey(cardList.get(i).getRank() + 2) &&
+                    rankMap.containsKey(cardList.get(i).getRank() + 3) &&
+                    rankMap.containsKey(cardList.get(i).getRank() + 4)) {
                 return true;
             }
         }
