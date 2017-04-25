@@ -2,6 +2,8 @@ package com.edu.cnu.poker.DataObject;
 
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * Created by Schwa on 2017-04-24.
  */
@@ -17,8 +19,8 @@ public class Player {
 
     public int betting(int i) {
         //Game에 판돈+i
-
-        return this.money-i;
+        this.money-=i;
+        return i;
     }
 
     public int die() {

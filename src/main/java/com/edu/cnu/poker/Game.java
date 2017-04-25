@@ -11,8 +11,13 @@ public class Game {
     private int SumOfMoney=0;
 
     public void enterNewGame(int i) {
-        player1.betting(i);
-        player2.betting(i);
+        System.out.println("New Game Start");
+        SumOfMoney+=player1.betting(i);
+        SumOfMoney+=player2.betting(i);
+
     }
 
+    public void turn() {
+
+    }
 }

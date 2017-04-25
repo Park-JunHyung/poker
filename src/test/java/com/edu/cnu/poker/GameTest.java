@@ -27,4 +27,13 @@ public class GameTest {
         assertThat(player.getMoney(),is(1400));
 
     }
+    @Test
+    public void  턴이_지날때_마다_돈을_걸자(){
+        Game game=new Game();
+        Deck deck=new Deck(1);
+        Hand hand=new Hand(deck,PokerType.SEVEN);
+        Player player1=new Player(1500,hand);
+        Player player2=new Player(1500,hand);
+        game.turn();
+    }
 }
