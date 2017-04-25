@@ -1,8 +1,6 @@
 package com.edu.cnu.poker.DataObject;
 
-import com.edu.cnu.poker.DataObject.Card;
-import com.edu.cnu.poker.DataObject.Deck;
-import com.edu.cnu.poker.PokerType;
+import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +8,7 @@ import java.util.List;
 /**
  * Created by cse on 2017-04-17.
  */
+@Data
 public class Hand {
 
     private Deck deck;

@@ -3,6 +3,7 @@ package com.edu.cnu.poker;
 import com.edu.cnu.poker.DataObject.Deck;
 import com.edu.cnu.poker.DataObject.Hand;
 import com.edu.cnu.poker.DataObject.Player;
+import com.edu.cnu.poker.DataObject.PokerType;
 import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
@@ -21,7 +22,7 @@ public class GameTest {
     public void 게임시작시_판돈은_걸어야지(){
         Game game=new Game();
         Deck deck=new Deck(1);
-        Hand hand=new Hand(deck,PokerType.SEVEN);
+        Hand hand=new Hand(deck, PokerType.SEVEN);
         Player player=new Player(1500,hand);
         game.enterNewGame(100);
         assertThat(player.getMoney(),is(1400));

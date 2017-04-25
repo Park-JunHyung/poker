@@ -1,8 +1,5 @@
 package com.edu.cnu.poker.DataObject;
 
-import com.edu.cnu.poker.DataObject.Deck;
-import com.edu.cnu.poker.DataObject.Hand;
-import com.edu.cnu.poker.PokerType;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -34,5 +31,6 @@ public class HandTest {
         Hand hand2 = new Hand(deck, PokerType.SEVEN);
         hand1.OpponentCard();
         hand2.MyCard();
+
     }
 }
