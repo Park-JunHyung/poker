@@ -9,6 +9,7 @@ public enum HandRank {
     TwoPair,
     Triple,
     Straight,
+    Mountain,
     Flush,
     FullHouse,
     FourCard,

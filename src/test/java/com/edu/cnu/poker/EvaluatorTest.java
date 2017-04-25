@@ -30,6 +30,19 @@ public class EvaluatorTest {
         assertThat(result, is(HandRank.RoyalStraightFlush));
     }
     @Test
+    public void SUIT가_다르고_숫자가_A_K_Q_J_10_이면_마운틴() {
+        Evaluator evaluator = new Evaluator();
+        List<Card> cardList = Arrays.asList(
+                new Card(1, Suit.CLUBS),
+                new Card(10,Suit.SPADES),
+                new Card(11,Suit.HEARTS),
+                new Card(12,Suit.DIAMONDS),
+                new Card(13,Suit.CLUBS)
+        );
+        HandRank result = evaluator.evaluate(cardList);
+        assertThat(result, is(HandRank.Mountain));
+    }
+    @Test
     public void SUIT가_같고_숫자가_연속되면_스트레이트플러시() {
         Evaluator evaluator = new Evaluator();
         List<Card> cardList = Arrays.asList(
@@ -76,7 +89,9 @@ public class EvaluatorTest {
                 new Card(2,Suit.SPADES),
                 new Card(1,Suit.DIAMONDS),
                 new Card(1,Suit.HEARTS),
-                new Card(2,Suit.CLUBS)
+                new Card(2,Suit.CLUBS),
+                new Card(3,Suit.CLUBS),
+                new Card(3,Suit.SPADES)
         );
         HandRank result = evaluator.evaluate(cardList);
         assertThat(result, is(HandRank.FullHouse));

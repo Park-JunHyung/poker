@@ -15,6 +15,7 @@ public class Evaluator {
         Map<Integer, Integer> rankMap = makeRankMap(cardList);
         Suit flushKey = null;
         HandRank result = HandRank.Top;
+
         for (Suit key : suitMap.keySet()) {
             if (suitMap.get(key) >= 5) {
                 flushKey = key;
@@ -33,10 +34,13 @@ public class Evaluator {
         if (isStraight(cardList, rankMap)) {
             result=HandRank.Straight;
         }
+        if(isMountain(rankMap)){
+            result = HandRank.Mountain;
+        }
         if (isFlush(cardList, flushKey)) {
             result=HandRank.Flush;
         }
-        if (isFullHouse(cardList, rankMap)) {
+        if (isFullHouse(rankMap)) {
             result=HandRank.FullHouse;
         }
         if (isFourCard(cardList, rankMap)) {
@@ -50,6 +54,18 @@ public class Evaluator {
         }
 
         return result;
+    }
+
+    private boolean isMountain( Map<Integer, Integer> rankMap) {
+            if (rankMap.containsKey(1) &&
+                    rankMap.containsKey(10)&&
+                    rankMap.containsKey(11)&&
+                    rankMap.containsKey(12)&&
+                    rankMap.containsKey(12)) {
+                return true;
+            }
+
+        return false;
     }
 
     private boolean isOnePair(Map<Integer, Integer> rankMap) {
@@ -96,18 +112,9 @@ public class Evaluator {
         return false;
     }
 
-    private boolean isFullHouse(List<Card> cardList, Map<Integer, Integer> rankMap) {
-        boolean triple = false;
-        boolean onePair = false;
+    private boolean isFullHouse(Map<Integer, Integer> rankMap) {
 
-        for (Integer key : rankMap.keySet()) {
-            if (rankMap.get(key) == 3) {
-                triple = true;
-            } else if (rankMap.get(key) == 2) {
-                onePair = true;
-            }
-        }
-        return triple && onePair;
+        return isOnePair(rankMap) && isTriple(rankMap);
     }
 
     private boolean isFourCard(List<Card> cardList, Map<Integer, Integer> rankMap) {
