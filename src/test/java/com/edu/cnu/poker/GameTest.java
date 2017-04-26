@@ -72,11 +72,13 @@ public class GameTest {
         game.betting(0);
         assertThat(game.getSumOfMoney(),is(1800));
     }
-    /*
+
     @Test
-    public void 세븐포커_과정은(){
+    public void 세븐포커_7장씩_패를_받고_마지막_베팅을_한다음_비교후_이긴사람이_다먹는다(){
         Game game=new Game(10000,PokerType.SEVEN);
-        Deck deck=new Deck(1);
-        Hand hand=new Hand(deck,PokerType.SEVEN);
-    }*/
+        String input = "800";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+        game.SevenPokerGame(100);
+    }
 }

@@ -17,10 +17,14 @@ public class Player {
         this.hand=playerHand;
     }
 
-    public int betting(int i) {
+    public int betting(int money) {
         //Game에 판돈+i
-        this.money-=i;
-        return i;
+        this.money-=money;
+        return money;
+    }
+
+    public void won(int prize){
+        this.money+=prize;
     }
 
     public int die() {

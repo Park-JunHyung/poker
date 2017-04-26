@@ -3,9 +3,7 @@ package com.edu.cnu.poker;
 import com.edu.cnu.poker.DataObject.*;
 import lombok.Data;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -29,11 +27,9 @@ public class Game {
         System.out.println("New Game Start");
         SumOfMoney += player.betting(startMoney);
         SumOfMoney += computer.betting(startMoney);
-        System.out.println("[ 현재 판돈 : " + SumOfMoney + "만원 ] [ 유저 소지금 : " + player.getMoney() + "만원] [ 컴퓨터 소지금 : " + computer.getMoney() + "만원 ]");
         player.getHand().CardAddtion(PokerType);
         computer.getHand().CardAddtion(PokerType);
-        player.getHand().MyCard();
-        computer.getHand().OpponentCard();
+        printStatus(Printing.CARDS_IN_TABLE,0);
     }
 
     public void betting(int turn) {
@@ -43,15 +39,15 @@ public class Game {
             System.out.println("베팅하세요.");
             int firstBet = bet.nextInt();
             SumOfMoney += player.betting(firstBet);
-            printStatus(Info.PLAYER_BET,firstBet);
+            printStatus(Printing.PLAYER_BET,firstBet);
             //AI미구현
             SumOfMoney += computer.betting(firstBet);
-            printStatus(Info.COMPUTER_CALL,0);
+            printStatus(Printing.COMPUTER_CALL,0);
         } else {//컴퓨터가 선
             //int firstBet = (int) Math.random() * 1000; //컴퓨터 베팅 임시 설정
             int firstBet = 600;//컴퓨터 베팅 임시설정
             SumOfMoney += computer.betting(firstBet);
-            printStatus(Info.COMPUTER_BET,firstBet);
+            printStatus(Printing.COMPUTER_BET,firstBet);
             int nextBet = bet.nextInt();
 
             while (nextBet < firstBet) {
@@ -60,16 +56,16 @@ public class Game {
             }
             SumOfMoney += player.betting(nextBet);
             if (nextBet > firstBet) {
-                printStatus(Info.PLAYER_RAISE,nextBet-firstBet);
+                printStatus(Printing.PLAYER_RAISE,nextBet-firstBet);
                 SumOfMoney += computer.betting(nextBet - firstBet);// 컴퓨터 추가 베팅 -- 콜
-                printStatus(Info.COMPUTER_CALL,0);
+                printStatus(Printing.COMPUTER_CALL,0);
                 //컴퓨터 추가 베팅 -- 레이즈 추가구현 예정
             } else
-                printStatus(Info.PLAYER_CALL,0);
+                printStatus(Printing.PLAYER_CALL,0);
         }
     }
 
-    public void printStatus(Info choice, int output) {
+    public void printStatus(Printing choice, int output) {
         System.out.println("[ 현재 판돈 : " + SumOfMoney + "만원 ] [ 유저 소지금 : " + player.getMoney() + "만원] [ 컴퓨터 소지금 : " + computer.getMoney() + "만원 ]");
         switch (choice) {
             case PLAYER_CALL://유저가 콜 하는 경우
@@ -81,6 +77,8 @@ public class Game {
             case PLAYER_BET://유저가 베팅하는 경우
                 System.out.println(">>> 당신은 " + output + "만원 만큼 베팅했습니다.");
                 break;
+            case PLAYER_WIN://유저가 이긴 경우
+                System.out.println(">>> 승리!! " + SumOfMoney + "만원 획득!!");
             case COMPUTER_CALL://컴퓨터가 콜하는 경우
                 System.out.println(">>> 컴퓨터가 콜 했습니다.");
                 break;
@@ -90,24 +88,41 @@ public class Game {
             case COMPUTER_BET://컴퓨터가 베팅하는 경우
                 System.out.println(">>> 컴퓨터가 " + output + "만원 만큼 베팅했습니다.");
                 break;
+            case COMPUTER_WIN://컴퓨터가 이긴 경우
+                System.out.println(">>> 패배!! " + (SumOfMoney / 2) + "만원 만큼 잃었습니다");
+                break;
+            case CARDS_IN_TABLE://테이블에 공개된 카드
+                computer.getHand().OpponentCard();
+                player.getHand().MyCard();
+                break;
+            case CARDS_OPENED://마지막에 카드 공개
+                computer.getHand().MyCard();
+                player.getHand().MyCard();
+                break;
             default:
                 break;
         }
     }
-    /*
     public void SevenPokerGame(int startMoney){
         enterNewGame(startMoney,3);
         betting(evaluating(player.getHand().getDisplayedCard(),player.getHand().getDisplayedCard()));
         //오프닝 후 첫번째 베팅
-        for (int i=0;i>7;i++){
-            System.out.println("[ 현재 판돈 : "+SumOfMoney+"만원 ] [ 유저 소지금 : "+player.getMoney()+"만원] [ 컴퓨터 소지금 : "+computer.getMoney()+"만원 ]");
+        for (int i=0;i<4;i++){
             player.getHand().CardAddtion(1);
             computer.getHand().CardAddtion(1);
-            player.getHand().MyCard();
-            computer.getHand().OpponentCard();
+            printStatus(Printing.CARDS_IN_TABLE,0);
             betting(evaluating(player.getHand().getDisplayedCard(),player.getHand().getDisplayedCard()));
         }
-    }*/
+        if (evaluating(player.getHand().getCardList(),computer.getHand().getCardList())==0){
+            printStatus(Printing.PLAYER_WIN,0);
+            player.won(SumOfMoney);
+        }else {
+            printStatus(Printing.COMPUTER_WIN,0);
+            computer.won(SumOfMoney);
+        }
+        SumOfMoney=0;
+        printStatus(Printing.DEFAULT,0);
+    }
 
     public int evaluating(List<Card> playerList, List<Card> computerList) {
         //int playerRank=evaluator.evaluate(playerList).getRankOfHand();

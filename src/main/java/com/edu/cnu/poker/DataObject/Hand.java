@@ -35,16 +35,26 @@ public class Hand {
 
     public void OpponentCard() {
         System.out.print("Computer :\t");
-        for (Card card : cardList){
-            if (card.equals(cardList.get(0))||card.equals(cardList.get(1))||cardList.size()==7){
-                System.out.printf("%15s","[Fliped]");
-            }else{
-                displayedCard.add(card);
-                System.out.printf("%15s",card.getSuit()+"_"+card.getRank());
+        for (Card card : cardList) {
+            if (card.equals(cardList.get(0)) || card.equals(cardList.get(1))) {
+                System.out.printf("%15s", "[Fliped]");
+            }else {
+                if (cardList.size()==7){
+                    if (card.equals(cardList.get(6))){
+                        System.out.printf("%15s", "[Fliped]");
+                    }else {
+                        displayedCard.add(card);
+                        System.out.printf("%15s", card.getSuit() + "_" + card.getRank());
+                    }
+                }else {
+                    displayedCard.add(card);
+                    System.out.printf("%15s", card.getSuit() + "_" + card.getRank());
+                }
             }
         }
         System.out.println();
     }
+
     public void MyCard() {
         System.out.print("Player :\t");
         for (Card card : cardList){
