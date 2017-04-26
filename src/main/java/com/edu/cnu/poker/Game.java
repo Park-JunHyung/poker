@@ -132,7 +132,13 @@ public class Game {
             return 0;
         } else if (playerRank == computerRank) {
             //족보가 같을경우 숫자-모양을 비교후 리턴받은 값
-            int moreValuableRank = (evaluator.sumOfLank(playerList) > evaluator.sumOfLank(computerList)) ? 1 : 0;
+            int isSofLSame =
+                    (evaluator.sumOfLank(playerList) >= evaluator.sumOfLank(computerList)) ?
+                            (evaluator.sumOfLank(playerList) > evaluator.sumOfLank(computerList)) ?
+                                    0 : -1 : 1;
+            int moreValuableRank = (isSofLSame == -1) ?
+                    (evaluator.sumOfSuit(playerList) > evaluator.sumOfSuit(computerList)) ?
+                            0 : 1: isSofLSame;
             return moreValuableRank;
         } else
             return 1;
