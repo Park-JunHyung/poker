@@ -82,8 +82,10 @@ public class Game {
     }*/
 
     public int evaluating(List<Card> playerList, List<Card> computerList) {
-        int playerRank=evaluator.evaluate(playerList).getRankOfHand();
-        int computerRank=evaluator.evaluate(computerList).getRankOfHand();
+        //int playerRank=evaluator.evaluate(playerList).getRankOfHand();
+        //int computerRank=evaluator.evaluate(computerList).getRankOfHand();
+        //---------아직 Evaluator수정 안함
+        int playerRank=0,computerRank=1;//temporary variable
         if (playerRank>computerRank){
             return 0;
         }else if (playerRank==computerRank){

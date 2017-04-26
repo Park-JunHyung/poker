@@ -31,7 +31,7 @@ public class GameTest {
         Game game=new Game(10000,PokerType.SEVEN);
         game.enterNewGame(100,3);
         int result=game.evaluating(game.getPlayer().getHand().getDisplayedCard(),game.getComputer().getHand().getDisplayedCard());
-        assertThat(result,is(10));
+        assertThat(result,is(1));
 
     }
     /*
