@@ -40,7 +40,7 @@ public class GameTest {
     }
 
     @Test
-    public void  사용자가_500만원_걸면_컴퓨터가_콜을한다(){
+    public void  사용자가_500만원_먼저_걸면_컴퓨터가_콜을한다(){
         Game game=new Game(10000,PokerType.SEVEN);
         game.enterNewGame(100,3);
 
@@ -51,6 +51,26 @@ public class GameTest {
         int turn=game.evaluating(game.getPlayer().getHand().getDisplayedCard(),game.getComputer().getHand().getDisplayedCard());
         game.betting(turn);
         assertThat(game.getSumOfMoney(),is(1200));
+    }
+    @Test
+    public void  컴퓨터가_먼저_걸면_사용자가_콜을_할수있다(){
+        Game game=new Game(10000,PokerType.SEVEN);
+        game.enterNewGame(100,3);
+        String input = "600";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+        game.betting(0);
+        assertThat(game.getSumOfMoney(),is(1400));
+    }
+    @Test
+    public void  컴퓨터가_먼저_걸고_사용자가_레이즈하면_컴퓨터가_콜한다(){
+        Game game=new Game(10000,PokerType.SEVEN);
+        game.enterNewGame(100,3);
+        String input = "800";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+        game.betting(0);
+        assertThat(game.getSumOfMoney(),is(1800));
     }
     /*
     @Test
