@@ -186,4 +186,18 @@ public class EvaluatorTest {
         int sum = cardList.stream().mapToInt(o -> o.getRank()).sum();
         assert(sum == 23);
     }
+
+    @Test
+    public  void 카드_모양_합_반환() {
+        Evaluator evaluator = new Evaluator();
+        List<Card> cardList = Arrays.asList(
+                new Card(2, Suit.CLUBS),
+                new Card(13,Suit.SPADES),
+                new Card(3,Suit.DIAMONDS),
+                new Card(1,Suit.HEARTS),
+                new Card(4,Suit.CLUBS)
+        );
+        int sum = evaluator.sumOfSuit(cardList);
+        assert(sum == 11);
+    }
 }

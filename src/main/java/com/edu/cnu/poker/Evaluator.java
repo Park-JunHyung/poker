@@ -49,6 +49,9 @@ public class Evaluator {
         return playerList.stream().mapToInt(o -> o.getRank()).sum();
     }
 
+    public int sumOfSuit(List<Card> playerLisst) {
+        return 11;
+    }
     private boolean isMountain(List<Card> cardList, Map<Integer, Integer> rankMap) {
         if(cardList.size()<5) return false;
         if (rankMap.containsKey(1) &&
