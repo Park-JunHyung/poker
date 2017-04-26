@@ -183,7 +183,7 @@ public class EvaluatorTest {
                 new Card(1,Suit.HEARTS),
                 new Card(4,Suit.CLUBS)
         );
-        int sum = cardList.stream().mapToInt(o -> o.getRank()).sum();
+        int sum = evaluator.sumOfLank(cardList);
         assert(sum == 23);
     }
 
