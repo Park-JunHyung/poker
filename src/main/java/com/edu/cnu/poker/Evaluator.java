@@ -45,6 +45,10 @@ public class Evaluator {
         return HandRank.Top;
     }
 
+    public int sumOfLank(List<Card> playerList) {
+        return playerList.stream().mapToInt(o -> o.getRank()).sum();
+    }
+
     private boolean isMountain(List<Card> cardList, Map<Integer, Integer> rankMap) {
         if(cardList.size()<5) return false;
         if (rankMap.containsKey(1) &&
