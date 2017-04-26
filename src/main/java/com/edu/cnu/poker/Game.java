@@ -125,14 +125,20 @@ public class Game {
     }
 
     public int evaluating(List<Card> playerList, List<Card> computerList) {
-        //int playerRank=evaluator.evaluate(playerList).getRankOfHand();
-        //int computerRank=evaluator.evaluate(computerList).getRankOfHand();
-        //---------아직 Evaluator수정 안함
-        int playerRank = 0, computerRank = 1;//temporary variable
+        int playerRank = evaluator.evaluate(playerList).getRankOfHand();
+        int computerRank = evaluator.evaluate(computerList).getRankOfHand();
+
         if (playerRank > computerRank) {
             return 0;
         } else if (playerRank == computerRank) {
-            int moreValuableRank = 0;//족보가 같을경우 숫자-모양을 비교후 리턴받은 값
+            //족보가 같을경우 숫자-모양을 비교후 리턴받은 값
+            int isSofLSame =
+                    (evaluator.sumOfLank(playerList) >= evaluator.sumOfLank(computerList)) ?
+                            (evaluator.sumOfLank(playerList) > evaluator.sumOfLank(computerList)) ?
+                                    0 : -1 : 1;
+            int moreValuableRank = (isSofLSame == -1) ?
+                    (evaluator.sumOfSuit(playerList) > evaluator.sumOfSuit(computerList)) ?
+                            0 : 1: isSofLSame;
             return moreValuableRank;
         } else
             return 1;
