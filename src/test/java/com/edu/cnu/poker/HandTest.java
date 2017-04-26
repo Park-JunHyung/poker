@@ -17,6 +17,7 @@ public class HandTest {
     public void 파이브카드_핸드_카드숫자는_5() {
         Deck deck = new Deck(1);
         Hand hand = new Hand(deck, PokerType.FIVE);
+        hand.CardAddtion(7);
         assertThat(hand.getTotalCard(), is(5));
     }
 
@@ -24,6 +25,7 @@ public class HandTest {
     public void 세븐카드_핸드_카드숫자는_7() {
         Deck deck = new Deck(1);
         Hand hand = new Hand(deck, PokerType.SEVEN);
+        hand.CardAddtion(7);
         assertThat(hand.getTotalCard(), is(7));
     }
 
@@ -32,6 +34,8 @@ public class HandTest {
         Deck deck = new Deck(1);
         Hand hand1 = new Hand(deck, PokerType.SEVEN);
         Hand hand2 = new Hand(deck, PokerType.SEVEN);
+        hand1.CardAddtion(7);
+        hand2.CardAddtion(7);
         hand1.OpponentCard();
         hand2.MyCard();
 

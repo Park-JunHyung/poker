@@ -1,5 +1,7 @@
 package com.edu.cnu.poker;
 
+import com.edu.cnu.poker.DataObject.PokerType;
+
 /**
  * Created by cse on 2017-04-17.
  * CARD - rank, suit
@@ -12,6 +14,8 @@ package com.edu.cnu.poker;
 public class PokerApplication {
 
     public static void main(String[] args) {
-        System.out.println("Hello Poker");
+        //testApplication
+        Game game=new Game(10000, PokerType.SEVEN);
+        game.SevenPokerGame(100);
     }
 }
