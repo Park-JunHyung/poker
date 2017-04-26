@@ -6,6 +6,10 @@ import com.edu.cnu.poker.DataObject.PokerType;
 import org.junit.Test;
 
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.util.Scanner;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
@@ -34,14 +38,21 @@ public class GameTest {
         assertThat(result,is(1));
 
     }
-    /*
-    @Test
-    public void  턴이_지날때_마다_돈을_걸자(){
-        Game game=new Game(10000,PokerType.SEVEN);
-        game.betting();
-        assertThat(game.getSumOfMoney(),is(1000));
-    }
 
+    @Test
+    public void  사용자가_500만원_걸면_컴퓨터가_콜을한다(){
+        Game game=new Game(10000,PokerType.SEVEN);
+        game.enterNewGame(100,3);
+
+        String input = "500";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+
+        int turn=game.evaluating(game.getPlayer().getHand().getDisplayedCard(),game.getComputer().getHand().getDisplayedCard());
+        game.betting(turn);
+        assertThat(game.getSumOfMoney(),is(1200));
+    }
+    /*
     @Test
     public void 세븐포커_과정은(){
         Game game=new Game(10000,PokerType.SEVEN);

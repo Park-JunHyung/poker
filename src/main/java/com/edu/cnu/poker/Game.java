@@ -33,39 +33,41 @@ public class Game {
         player.getHand().MyCard();
         computer.getHand().OpponentCard();
     }
-    /*
+
     public void betting(int turn) {
 
         Scanner bet = new Scanner(System.in);
-        player.getHand().MyCard();
-        computer.getHand().OpponentCard();
-        System.out.println("현재 판돈 : "+SumOfMoney);
+        System.out.println("현재 판돈 : "+SumOfMoney+"만원");
         if (turn == 1) {//유저가 선
             System.out.println("베팅하세요.");
             int firstBet = bet.nextInt();
             SumOfMoney += player.betting(firstBet);
+            System.out.println("당신은 "+firstBet+"만원 만큼 베팅했습니다.");
             //AI미구현
             SumOfMoney += computer.betting(firstBet);
+            System.out.println("컴퓨터가 콜 했습니다.");
         } else {//컴퓨터가 선
             int firstBet = (int) Math.random() * 1000; //컴퓨터 베팅 임시 설정
-            System.out.println("컴퓨터가 "+firstBet+"만큼 베팅했습니다.");
+            System.out.println("컴퓨터가 "+firstBet+"만원 만큼 베팅했습니다.");
             SumOfMoney += computer.betting(firstBet);
             int nextBet = bet.nextInt();
 
             while (nextBet < firstBet) {
-                System.out.println(firstBet + "이상 베팅을 해야 합니다.");
+                System.out.println(firstBet + "만원 이상 베팅을 해야 합니다.");
                 nextBet = bet.nextInt();
             }
             SumOfMoney += player.betting(nextBet);
 
             if (nextBet > firstBet) {
+                System.out.println("당신은 "+(nextBet-firstBet)+"만큼 레이즈 했습니다.");
                 SumOfMoney += computer.betting(nextBet - firstBet);// 컴퓨터 추가 베팅 -- 콜
-                System.out.println("컴퓨터가 콜을 했습니다.");
+                System.out.println("컴퓨터가 콜 했습니다.");
                 //컴퓨터 추가 베팅 -- 레이즈 추가구현 예정
-            }
+            }else
+                System.out.println("당신은 콜 했습니다.");
         }
-        System.out.println("현재 판돈 : "+SumOfMoney);
-    }*/
+        System.out.println("현재 판돈 : "+SumOfMoney+"만원");
+    }
     /*
     public void SevenPokerGame(int startMoney){
         enterNewGame(startMoney,3);
