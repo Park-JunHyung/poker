@@ -71,6 +71,11 @@ public class Game {
         HandRank handRank;
         handRank = this.evaluator.evaluate(computer.getHand().getCardList());
 
+        if (computer.getHand().getCardList().size() < 5)
+        {
+            bettingMoney = (turn == 1 ) ? firstBet : (int)Math.random() * 1000;
+            return bettingMoney;
+        }
         if (turn == 1) {
             bettingMoney = (handRank.getRankOfHand() > 2) ?
                     (handRank.getRankOfHand() > 8) ?
