@@ -35,7 +35,7 @@ public class Game {
     public void bettingTime(int turn) {
 
         Scanner bet = new Scanner(System.in);
-        if (turn == 1) {//유저가 선
+        if (turn == 0) {//유저가 선
             System.out.println("베팅하세요.");
             int firstBet = bet.nextInt();
             SumOfMoney += player.betting(firstBet);
@@ -60,7 +60,6 @@ public class Game {
                 printStatus(Printing.PLAYER_RAISE,nextBet-firstBet);
                 SumOfMoney += computer.betting(nextBet - firstBet);// 컴퓨터 추가 베팅 -- 콜
                 printStatus(Printing.COMPUTER_CALL,0);
-                //컴퓨터 추가 베팅 -- 레이즈 추가구현 예정
             } else
                 printStatus(Printing.PLAYER_CALL,0);
         }
@@ -76,14 +75,12 @@ public class Game {
             bettingMoney = (turn == 1 ) ? firstBet : (int)Math.random() * 1000;
             return bettingMoney;
         }
-        if (turn == 1) {
+        if (turn == 0) {
             bettingMoney = (handRank.getRankOfHand() > 2) ?
                     (handRank.getRankOfHand() > 8) ?
                             firstBet * 2 : firstBet : 0;
         } else {
-            bettingMoney = (handRank.getRankOfHand() > 2) ?
-                    (handRank.getRankOfHand() > 8) ?
-                            firstBet *2 : firstBet : 0;
+            bettingMoney = (int) Math.random() * 100;
         }
         return bettingMoney;
     }
