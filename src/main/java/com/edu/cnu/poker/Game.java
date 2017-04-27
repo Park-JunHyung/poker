@@ -44,12 +44,16 @@ public class Game {
             }else{
                 SumOfMoney += player.betting(firstBet);
                 printStatus(Printing.PLAYER_BET,firstBet);
-                //AI미구현
                 int computerBetting = computerBetting(turn, firstBet);
-                printStatus(Printing.COMPUTER_BET,computerBetting);
                 SumOfMoney += computer.betting(computerBetting);
-                if (computerBetting == firstBet) printStatus(Printing.COMPUTER_CALL,0);
-                else printStatus(Printing.COMPUTER_RAISE,computerBetting - firstBet);
+                if (computerBetting == firstBet) {
+                    printStatus(Printing.COMPUTER_CALL, 0);
+                }else if (computerBetting==0){
+                    isDie=Printing.COMPUTER_DIE;
+                }
+                else {
+                    printStatus(Printing.COMPUTER_RAISE, computerBetting - firstBet);
+                }
             }
         } else {//컴퓨터가 선
             int firstBet = computerBetting(1, 0);
@@ -86,10 +90,10 @@ public class Game {
 
         if (computer.getHand().getCardList().size() < 5)
         {
-            bettingMoney = (turn == 1 ) ? firstBet : (int)Math.random() * 1000;
+            bettingMoney = (turn == 0 ) ? firstBet : (int)Math.random() * 1000;
             return bettingMoney;
         }
-        if (turn == 0) {
+        if (turn == 1) {
             bettingMoney = (handRank.getRankOfHand() > 2) ?
                     (handRank.getRankOfHand() > 8) ?
                             firstBet * 2 : firstBet : 0;
@@ -180,8 +184,10 @@ public class Game {
     }
 
     public int evaluating(List<Card> playerList, List<Card> computerList) {
-        int playerRank = evaluator.evaluate(playerList).getRankOfHand();
-        int computerRank = evaluator.evaluate(computerList).getRankOfHand();
+        //int playerRank = evaluator.evaluate(playerList).getRankOfHand();
+        //int computerRank = evaluator.evaluate(computerList).getRankOfHand();
+        int playerRank=1;
+        int computerRank=0;
 
         if (playerRank > computerRank) {
             return 0;
