@@ -100,7 +100,6 @@ public class Evaluator {
 
     private boolean isStraight(List<Card> cardList, Map<Integer, Integer> rankMap) {
         if(cardList.size()<5) return false;
-        Collections.sort(cardList);
         for (int i = 0; i < 3; i++) {
             if (cardList.get(i).getRank() > 10) break;
             if (rankMap.containsKey(cardList.get(i).getRank()) &&
@@ -151,7 +150,6 @@ public class Evaluator {
     private boolean isStraightFlush(List<Card> cardList, Suit key) {
         if(cardList.size()<5) return false;
         if (key == null) return false;
-        Collections.sort(cardList);
         for (int i = 0; i < 3; i++) {
             if (cardList.get(i).getRank() > 9) break;
             if (cardList.containsAll(
