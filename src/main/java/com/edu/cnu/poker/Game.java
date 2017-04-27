@@ -32,20 +32,22 @@ public class Game {
         printStatus(Printing.CARDS_IN_TABLE,0);
     }
 
-    public void betting(int turn) {
+    public void bettingTime(int turn) {
 
         Scanner bet = new Scanner(System.in);
-        if (turn == 1) {//유저가 선
+        if (turn == 0) {//유저가 선
             System.out.println("베팅하세요.");
             int firstBet = bet.nextInt();
             SumOfMoney += player.betting(firstBet);
             printStatus(Printing.PLAYER_BET,firstBet);
             //AI미구현
-            SumOfMoney += computer.betting(firstBet);
-            printStatus(Printing.COMPUTER_CALL,0);
+            int computerBetting = computerBetting(turn, firstBet);
+            printStatus(Printing.COMPUTER_BET,computerBetting);
+            SumOfMoney += computer.betting(computerBetting);
+            if (computerBetting == firstBet) printStatus(Printing.COMPUTER_CALL,0);
+            else printStatus(Printing.COMPUTER_RAISE,computerBetting - firstBet);
         } else {//컴퓨터가 선
-            //int firstBet = (int) Math.random() * 1000; //컴퓨터 베팅 임시 설정
-            int firstBet = 600;//컴퓨터 베팅 임시설정
+            int firstBet = computerBetting(1, 0);
             SumOfMoney += computer.betting(firstBet);
             printStatus(Printing.COMPUTER_BET,firstBet);
             int nextBet = bet.nextInt();
@@ -59,10 +61,29 @@ public class Game {
                 printStatus(Printing.PLAYER_RAISE,nextBet-firstBet);
                 SumOfMoney += computer.betting(nextBet - firstBet);// 컴퓨터 추가 베팅 -- 콜
                 printStatus(Printing.COMPUTER_CALL,0);
-                //컴퓨터 추가 베팅 -- 레이즈 추가구현 예정
             } else
                 printStatus(Printing.PLAYER_CALL,0);
         }
+    }
+
+    public int computerBetting(int turn, int firstBet) {
+        int bettingMoney;
+        HandRank handRank;
+        handRank = this.evaluator.evaluate(computer.getHand().getCardList());
+
+        if (computer.getHand().getCardList().size() < 5)
+        {
+            bettingMoney = (turn == 1 ) ? firstBet : (int)Math.random() * 1000;
+            return bettingMoney;
+        }
+        if (turn == 0) {
+            bettingMoney = (handRank.getRankOfHand() > 2) ?
+                    (handRank.getRankOfHand() > 8) ?
+                            firstBet * 2 : firstBet : 0;
+        } else {
+            bettingMoney = (int) Math.random() * 100;
+        }
+        return bettingMoney;
     }
 
     public void printStatus(Printing choice, int output) {
@@ -103,15 +124,16 @@ public class Game {
                 break;
         }
     }
-    public void SevenPokerGame(int startMoney){
+
+    public void sevenPokerGame(int startMoney){
         enterNewGame(startMoney,3);
-        betting(evaluating(player.getHand().getDisplayedCard(),player.getHand().getDisplayedCard()));
+        bettingTime(evaluating(player.getHand().getDisplayedCard(),player.getHand().getDisplayedCard()));
         //오프닝 후 첫번째 베팅
         for (int i=0;i<4;i++){
             player.getHand().CardAddtion(1);
             computer.getHand().CardAddtion(1);
             printStatus(Printing.CARDS_IN_TABLE,0);
-            betting(evaluating(player.getHand().getDisplayedCard(),player.getHand().getDisplayedCard()));
+            bettingTime(evaluating(player.getHand().getDisplayedCard(),player.getHand().getDisplayedCard()));
         }
         if (evaluating(player.getHand().getCardList(),computer.getHand().getCardList())==0){
             printStatus(Printing.PLAYER_WIN,0);

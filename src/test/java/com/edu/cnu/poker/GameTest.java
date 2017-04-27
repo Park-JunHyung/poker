@@ -1,14 +1,12 @@
 package com.edu.cnu.poker;
 
-import com.edu.cnu.poker.DataObject.Deck;
-import com.edu.cnu.poker.DataObject.Hand;
+import com.edu.cnu.poker.DataObject.HandRank;
 import com.edu.cnu.poker.DataObject.PokerType;
 import org.junit.Test;
 
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.util.Scanner;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
@@ -49,7 +47,7 @@ public class GameTest {
         System.setIn(in);
 
         int turn=game.evaluating(game.getPlayer().getHand().getDisplayedCard(),game.getComputer().getHand().getDisplayedCard());
-        game.betting(turn);
+        game.bettingTime(turn);
         assertThat(game.getSumOfMoney(),is(1200));
     }
     @Test
@@ -59,7 +57,7 @@ public class GameTest {
         String input = "600";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
-        game.betting(0);
+        game.bettingTime(0);
         assertThat(game.getSumOfMoney(),is(1400));
     }
     @Test
@@ -69,7 +67,7 @@ public class GameTest {
         String input = "800";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
-        game.betting(0);
+        game.bettingTime(0);
         assertThat(game.getSumOfMoney(),is(1800));
     }
 
@@ -79,6 +77,13 @@ public class GameTest {
         String input = "800";
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
-        game.SevenPokerGame(100);
+        game.sevenPokerGame(100);
+    }
+
+    @Test
+    public void 컴퓨터_패가_좋으면_레이즈(){
+        Game game = new Game(10000, PokerType.SEVEN);
+        int bettingMoney = game.computerBetting(1,500);
+        assert(bettingMoney >= 500);
     }
 }
