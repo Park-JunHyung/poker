@@ -6,6 +6,7 @@ import com.edu.cnu.poker.DataObject.Suit;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -21,11 +22,11 @@ public class EvaluatorTest {
     public void SUIT가_같고_숫자가_A_K_Q_J_10_이면_로열스트레이트플러시() {
         Evaluator evaluator = new Evaluator();
         List<Card> cardList = Arrays.asList(
-                new Card(1, Suit.CLUBS),
+                new Card(12, Suit.CLUBS),
+                new Card(1,Suit.CLUBS),
                 new Card(10,Suit.CLUBS),
-                new Card(11,Suit.CLUBS),
-                new Card(12,Suit.CLUBS),
-                new Card(13,Suit.CLUBS)
+                new Card(13,Suit.CLUBS),
+                new Card(11,Suit.CLUBS)
         );
         HandRank result = evaluator.evaluate(cardList);
         assertThat(result, is(HandRank.RoyalStraightFlush));
@@ -49,11 +50,13 @@ public class EvaluatorTest {
     public void SUIT가_같고_숫자가_연속되면_스트레이트플러시() {
         Evaluator evaluator = new Evaluator();
         List<Card> cardList = Arrays.asList(
-                new Card(2, Suit.CLUBS),
-                new Card(3,Suit.CLUBS),
+                new Card(5, Suit.CLUBS),
+                new Card(6,Suit.CLUBS),
+                new Card(10,Suit.CLUBS),
                 new Card(4,Suit.CLUBS),
-                new Card(5,Suit.CLUBS),
-                new Card(6,Suit.CLUBS)
+                new Card(3,Suit.CLUBS),
+                new Card(2,Suit.CLUBS),
+                new Card(11,Suit.CLUBS)
         );
         HandRank result = evaluator.evaluate(cardList);
         assertThat(result, is(HandRank.StraightFlush));
@@ -107,11 +110,11 @@ public class EvaluatorTest {
     public void 숫자가_5장_연속되면_스트레이트다() {
         Evaluator evaluator = new Evaluator();
         List<Card> cardList = Arrays.asList(
-                new Card(2, Suit.CLUBS),
-                new Card(3,Suit.SPADES),
-                new Card(4,Suit.DIAMONDS),
-                new Card(5,Suit.HEARTS),
-                new Card(6,Suit.CLUBS)
+                new Card(6, Suit.CLUBS),
+                new Card(4,Suit.SPADES),
+                new Card(2,Suit.DIAMONDS),
+                new Card(3,Suit.HEARTS),
+                new Card(5,Suit.CLUBS)
         );
         HandRank result = evaluator.evaluate(cardList);
         assertThat(result, is(HandRank.Straight));
@@ -199,5 +202,75 @@ public class EvaluatorTest {
         );
         int sum = evaluator.sumOfSuit(cardList);
         assert(sum == 11);
+    }
+    @Test
+    public void 로얄스트레이트플러시_사용된_카드_확인() {
+        Evaluator evaluator = new Evaluator();
+        List<Card> cardList = Arrays.asList(
+                new Card(12, Suit.CLUBS),
+                new Card(13,Suit.CLUBS),
+                new Card(11,Suit.CLUBS),
+                new Card(1,Suit.CLUBS),
+                new Card(10,Suit.CLUBS),
+                new Card(5,Suit.CLUBS),
+                new Card(6,Suit.CLUBS)
+        );
+        evaluator.evaluate(cardList);
+        List<Card> usedCardList = evaluator.usedCardLIst(cardList);
+
+        assertThat(usedCardList,is(Arrays.asList(
+                new Card(12, Suit.CLUBS,true),
+                new Card(13,Suit.CLUBS,true),
+                new Card(11,Suit.CLUBS,true),
+                new Card(1,Suit.CLUBS,true),
+                new Card(10,Suit.CLUBS,true)
+        )));
+    }
+    @Test
+    public void 스트레이트플러시_사용된_카드_확인() {
+        Evaluator evaluator = new Evaluator();
+        List<Card> cardList = Arrays.asList(
+                new Card(7, Suit.CLUBS),
+                new Card(8,Suit.CLUBS),
+                new Card(11,Suit.CLUBS),
+                new Card(4,Suit.CLUBS),
+                new Card(10,Suit.CLUBS),
+                new Card(5,Suit.CLUBS),
+                new Card(6,Suit.CLUBS)
+        );
+        evaluator.evaluate(cardList);
+        List<Card> usedCardList = evaluator.usedCardLIst(cardList);
+        Collections.sort(usedCardList);
+        assertThat(usedCardList,is(Arrays.asList(
+                new Card(4, Suit.CLUBS,true),
+                new Card(5,Suit.CLUBS,true),
+                new Card(6,Suit.CLUBS,true),
+                new Card(7,Suit.CLUBS,true),
+                new Card(8,Suit.CLUBS,true)
+        )));
+    }
+    @Test
+    public void 플러시_사용된_카드_확인() {
+        Evaluator evaluator = new Evaluator();
+        List<Card> cardList = Arrays.asList(
+                new Card(13, Suit.CLUBS),
+                new Card(1,Suit.SPADES),
+                new Card(8,Suit.CLUBS),
+                new Card(10,Suit.CLUBS),
+                new Card(11,Suit.CLUBS),
+                new Card(6,Suit.CLUBS),
+                new Card(4,Suit.CLUBS)
+        );
+        evaluator.evaluate(cardList);
+        List<Card> usedCardList = evaluator.usedCardLIst(cardList);
+        Collections.sort(usedCardList);
+        assertThat(usedCardList,is(Arrays.asList(
+                new Card(4,Suit.CLUBS,true),
+                new Card(6,Suit.CLUBS,true),
+                new Card(8,Suit.CLUBS,true),
+                new Card(10,Suit.CLUBS,true),
+                new Card(11,Suit.CLUBS,true),
+                new Card(13, Suit.CLUBS,true)
+        )));
     }
 }
