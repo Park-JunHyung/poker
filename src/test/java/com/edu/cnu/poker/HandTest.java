@@ -17,7 +17,7 @@ public class HandTest {
     public void 파이브카드_핸드_카드숫자는_5() {
         Deck deck = new Deck(1);
         Hand hand = new Hand(deck, PokerType.FIVE);
-        hand.CardAddtion(7);
+        hand.CardAddtion(5);
         assertThat(hand.getTotalCard(), is(5));
     }
 
