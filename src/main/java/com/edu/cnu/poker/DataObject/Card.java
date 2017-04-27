@@ -10,6 +10,7 @@ import lombok.Data;
 public class Card implements Comparable<Card>{
     private int rank;
     private Suit suit;
+    private boolean used=false;
 
     public Card(int rank, Suit suit) {
         this.rank = rank;
@@ -18,8 +19,20 @@ public class Card implements Comparable<Card>{
             throw new NoSuchRankException();
         }
     }
+    public Card(int rank, Suit suit, boolean used) {
+        this.rank = rank;
+        this.suit = suit;
+        this.used = used;
+        if (rank > 13) {
+            throw new NoSuchRankException();
+        }
+    }
 
     public int compareTo(Card o) {
         return this.getRank() - o.getRank();
+    }
+
+    public boolean getUsed() {
+        return used;
     }
 }

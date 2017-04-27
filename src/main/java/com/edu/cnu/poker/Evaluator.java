@@ -142,9 +142,22 @@ public class Evaluator {
                 cardList.contains(new Card(11, key)) &&
                 cardList.contains(new Card(12, key)) &&
                 cardList.contains(new Card(13, key))) {
+            cardList.get(cardList.indexOf(new Card(1,key))).setUsed(true);
+            cardList.get(cardList.indexOf(new Card(10,key))).setUsed(true);
+            cardList.get(cardList.indexOf(new Card(11,key))).setUsed(true);
+            cardList.get(cardList.indexOf(new Card(12,key))).setUsed(true);
+            cardList.get(cardList.indexOf(new Card(13,key))).setUsed(true);
             return true;
         }
         return false;
+    }
+    public List<Card> usedCardLIst(List<Card> cardList){
+        List<Card> usedCardList = new ArrayList<>();
+        for(int i = 0;i<cardList.size();i++){
+            if(cardList.get(i).getUsed())
+                usedCardList.add(cardList.get(i));
+        }
+        return usedCardList;
     }
 
     private boolean isStraightFlush(List<Card> cardList, Suit key) {
