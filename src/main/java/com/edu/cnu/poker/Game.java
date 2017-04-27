@@ -15,6 +15,7 @@ public class Game {
     private Player computer;
     private Evaluator evaluator;
     private int SumOfMoney = 0;
+    private static Printing isDie;
 
     public Game(int money, PokerType pokerType) {
         this.evaluator = new Evaluator();
@@ -38,31 +39,43 @@ public class Game {
         if (turn == 0) {//유저가 선
             System.out.println("베팅하세요.");
             int firstBet = bet.nextInt();
-            SumOfMoney += player.betting(firstBet);
-            printStatus(Printing.PLAYER_BET,firstBet);
-            //AI미구현
-            int computerBetting = computerBetting(turn, firstBet);
-            printStatus(Printing.COMPUTER_BET,computerBetting);
-            SumOfMoney += computer.betting(computerBetting);
-            if (computerBetting == firstBet) printStatus(Printing.COMPUTER_CALL,0);
-            else printStatus(Printing.COMPUTER_RAISE,computerBetting - firstBet);
+            if (firstBet==0){
+                isDie=Printing.PLAYER_DIE;
+            }else{
+                SumOfMoney += player.betting(firstBet);
+                printStatus(Printing.PLAYER_BET,firstBet);
+                //AI미구현
+                int computerBetting = computerBetting(turn, firstBet);
+                printStatus(Printing.COMPUTER_BET,computerBetting);
+                SumOfMoney += computer.betting(computerBetting);
+                if (computerBetting == firstBet) printStatus(Printing.COMPUTER_CALL,0);
+                else printStatus(Printing.COMPUTER_RAISE,computerBetting - firstBet);
+            }
         } else {//컴퓨터가 선
             int firstBet = computerBetting(1, 0);
-            SumOfMoney += computer.betting(firstBet);
-            printStatus(Printing.COMPUTER_BET,firstBet);
-            int nextBet = bet.nextInt();
-
-            while (nextBet < firstBet) {
-                System.out.println(firstBet + "만원 이상 베팅을 해야 합니다.");
-                nextBet = bet.nextInt();
+            if (firstBet==0){
+                isDie=Printing.COMPUTER_DIE;
+            } else {
+                SumOfMoney += computer.betting(firstBet);
+                printStatus(Printing.COMPUTER_BET,firstBet);
+                int nextBet = bet.nextInt();
+                if (nextBet == 0) {
+                    isDie = Printing.PLAYER_DIE;
+                } else {
+                    while (nextBet < firstBet) {
+                        System.out.println(firstBet + "만원 이상 베팅을 해야 합니다.");
+                        nextBet = bet.nextInt();
+                    }
+                    SumOfMoney += player.betting(nextBet);
+                    if (nextBet > firstBet) {
+                        printStatus(Printing.PLAYER_RAISE, nextBet - firstBet);
+                        SumOfMoney += computer.betting(nextBet - firstBet);// 컴퓨터 추가 베팅 -- 콜
+                        printStatus(Printing.COMPUTER_CALL, 0);
+                        //컴퓨터 추가 베팅 -- 레이즈 추가구현 예정
+                    } else
+                        printStatus(Printing.PLAYER_CALL, 0);
+                }
             }
-            SumOfMoney += player.betting(nextBet);
-            if (nextBet > firstBet) {
-                printStatus(Printing.PLAYER_RAISE,nextBet-firstBet);
-                SumOfMoney += computer.betting(nextBet - firstBet);// 컴퓨터 추가 베팅 -- 콜
-                printStatus(Printing.COMPUTER_CALL,0);
-            } else
-                printStatus(Printing.PLAYER_CALL,0);
         }
     }
 
@@ -100,6 +113,10 @@ public class Game {
                 break;
             case PLAYER_WIN://유저가 이긴 경우
                 System.out.println(">>> 승리!! " + SumOfMoney + "만원 획득!!");
+                break;
+            case PLAYER_DIE://유저가 다이한 경우
+                System.out.println(">>> 당신은 다이 했습니다.");
+                break;
             case COMPUTER_CALL://컴퓨터가 콜하는 경우
                 System.out.println(">>> 컴퓨터가 콜 했습니다.");
                 break;
@@ -111,6 +128,9 @@ public class Game {
                 break;
             case COMPUTER_WIN://컴퓨터가 이긴 경우
                 System.out.println(">>> 패배!! " + (SumOfMoney / 2) + "만원 만큼 잃었습니다");
+                break;
+            case COMPUTER_DIE://컴퓨터가 다이한 경우
+                System.out.println(">>> 컴퓨터가 다이 했습니다. "+SumOfMoney+"만원 획득!!");
                 break;
             case CARDS_IN_TABLE://테이블에 공개된 카드
                 computer.getHand().OpponentCard();
@@ -124,24 +144,37 @@ public class Game {
                 break;
         }
     }
-
-    public void sevenPokerGame(int startMoney){
+  
+    public void runSevenPokerGame(int startMoney){
+        isDie=Printing.DEFAULT;
         enterNewGame(startMoney,3);
-        bettingTime(evaluating(player.getHand().getDisplayedCard(),player.getHand().getDisplayedCard()));
-        //오프닝 후 첫번째 베팅
+        bettingTime(evaluating(player.getHand().getDisplayedCard(),player.getHand().getDisplayedCard()));//오프닝 후 첫번째 베팅
         for (int i=0;i<4;i++){
-            player.getHand().CardAddtion(1);
-            computer.getHand().CardAddtion(1);
-            printStatus(Printing.CARDS_IN_TABLE,0);
-            bettingTime(evaluating(player.getHand().getDisplayedCard(),player.getHand().getDisplayedCard()));
+            if (isDie == Printing.DEFAULT) {
+                player.getHand().CardAddtion(1);
+                computer.getHand().CardAddtion(1);
+                printStatus(Printing.CARDS_IN_TABLE, 0);
+                bettingTime(evaluating(player.getHand().getDisplayedCard(), player.getHand().getDisplayedCard()));
+            }else if (isDie==Printing.PLAYER_DIE){//유저가 죽은 경우
+                printStatus(Printing.PLAYER_DIE,0);
+                computer.won(SumOfMoney);
+                break;
+            }else if (isDie==Printing.COMPUTER_DIE){//컴퓨터가 죽은 경우
+                printStatus(Printing.COMPUTER_DIE,0);
+                player.won(SumOfMoney);
+                break;
+            }
         }
-        if (evaluating(player.getHand().getCardList(),computer.getHand().getCardList())==0){
-            printStatus(Printing.PLAYER_WIN,0);
-            player.won(SumOfMoney);
-        }else {
-            printStatus(Printing.COMPUTER_WIN,0);
-            computer.won(SumOfMoney);
+        if (isDie==Printing.DEFAULT){
+            if (evaluating(player.getHand().getCardList(),computer.getHand().getCardList())==0){
+                printStatus(Printing.PLAYER_WIN,0);
+                player.won(SumOfMoney);
+            }else {
+                printStatus(Printing.COMPUTER_WIN,0);
+                computer.won(SumOfMoney);
+            }
         }
+
         SumOfMoney=0;
         printStatus(Printing.DEFAULT,0);
     }
@@ -154,13 +187,13 @@ public class Game {
             return 0;
         } else if (playerRank == computerRank) {
             //족보가 같을경우 숫자-모양을 비교후 리턴받은 값
-            int isSofLSame =
+            int isSofRSame =
                     (evaluator.sumOfLank(playerList) >= evaluator.sumOfLank(computerList)) ?
                             (evaluator.sumOfLank(playerList) > evaluator.sumOfLank(computerList)) ?
                                     0 : -1 : 1;
-            int moreValuableRank = (isSofLSame == -1) ?
+            int moreValuableRank = (isSofRSame == -1) ?
                     (evaluator.sumOfSuit(playerList) > evaluator.sumOfSuit(computerList)) ?
-                            0 : 1: isSofLSame;
+                            0 : 1: isSofRSame;
             return moreValuableRank;
         } else
             return 1;

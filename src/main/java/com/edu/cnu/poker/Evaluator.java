@@ -59,7 +59,7 @@ public class Evaluator {
                 rankMap.containsKey(10) &&
                 rankMap.containsKey(11) &&
                 rankMap.containsKey(12) &&
-                rankMap.containsKey(12)) {
+                rankMap.containsKey(13)) {
             return true;
         }
 
