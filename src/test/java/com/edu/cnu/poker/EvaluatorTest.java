@@ -49,11 +49,13 @@ public class EvaluatorTest {
     public void SUIT가_같고_숫자가_연속되면_스트레이트플러시() {
         Evaluator evaluator = new Evaluator();
         List<Card> cardList = Arrays.asList(
-                new Card(2, Suit.CLUBS),
-                new Card(3,Suit.CLUBS),
+                new Card(5, Suit.CLUBS),
+                new Card(6,Suit.CLUBS),
+                new Card(10,Suit.CLUBS),
                 new Card(4,Suit.CLUBS),
-                new Card(5,Suit.CLUBS),
-                new Card(6,Suit.CLUBS)
+                new Card(3,Suit.CLUBS),
+                new Card(2,Suit.CLUBS),
+                new Card(11,Suit.CLUBS)
         );
         HandRank result = evaluator.evaluate(cardList);
         assertThat(result, is(HandRank.StraightFlush));
@@ -221,6 +223,29 @@ public class EvaluatorTest {
                 new Card(11,Suit.CLUBS,true),
                 new Card(1,Suit.CLUBS,true),
                 new Card(10,Suit.CLUBS,true)
+        )));
+    }
+    @Test
+    public void 스트레이트플러시_사용된_카드_확인() {
+        Evaluator evaluator = new Evaluator();
+        List<Card> cardList = Arrays.asList(
+                new Card(7, Suit.CLUBS),
+                new Card(8,Suit.CLUBS),
+                new Card(11,Suit.CLUBS),
+                new Card(4,Suit.CLUBS),
+                new Card(10,Suit.CLUBS),
+                new Card(5,Suit.CLUBS),
+                new Card(6,Suit.CLUBS)
+        );
+        evaluator.evaluate(cardList);
+        List<Card> usedCardList = evaluator.usedCardLIst(cardList);
+        
+        assertThat(usedCardList,is(Arrays.asList(
+                new Card(4, Suit.CLUBS,true),
+                new Card(5,Suit.CLUBS,true),
+                new Card(6,Suit.CLUBS,true),
+                new Card(7,Suit.CLUBS,true),
+                new Card(8,Suit.CLUBS,true)
         )));
     }
 }

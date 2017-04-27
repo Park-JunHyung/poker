@@ -53,6 +53,15 @@ public class Evaluator {
         return playerLisst.stream().mapToInt(o -> o.getSuit().getRankOfSuit()).sum();
     }
 
+    public List<Card> usedCardLIst(List<Card> cardList){
+        List<Card> usedCardList = new ArrayList<>();
+        for(int i = 0;i<cardList.size();i++){
+            if(cardList.get(i).getUsed())
+                usedCardList.add(cardList.get(i));
+        }
+        return usedCardList;
+    }
+
     private boolean isMountain(List<Card> cardList, Map<Integer, Integer> rankMap) {
         if(cardList.size()<5) return false;
         if (rankMap.containsKey(1) &&
@@ -100,6 +109,7 @@ public class Evaluator {
 
     private boolean isStraight(List<Card> cardList, Map<Integer, Integer> rankMap) {
         if(cardList.size()<5) return false;
+        Collections.sort(cardList);
         for (int i = 0; i < 3; i++) {
             if (cardList.get(i).getRank() > 10) break;
             if (rankMap.containsKey(cardList.get(i).getRank()) &&
@@ -151,18 +161,12 @@ public class Evaluator {
         }
         return false;
     }
-    public List<Card> usedCardLIst(List<Card> cardList){
-        List<Card> usedCardList = new ArrayList<>();
-        for(int i = 0;i<cardList.size();i++){
-            if(cardList.get(i).getUsed())
-                usedCardList.add(cardList.get(i));
-        }
-        return usedCardList;
-    }
+
 
     private boolean isStraightFlush(List<Card> cardList, Suit key) {
         if(cardList.size()<5) return false;
         if (key == null) return false;
+        Collections.sort(cardList);
         for (int i = 0; i < 3; i++) {
             if (cardList.get(i).getRank() > 9) break;
             if (cardList.containsAll(
@@ -173,6 +177,11 @@ public class Evaluator {
                             new Card(cardList.get(i).getRank() + 3, key),
                             new Card(cardList.get(i).getRank() + 4, key)
                     ))) {
+                cardList.get(i).setUsed(true);
+                cardList.get(i+1).setUsed(true);
+                cardList.get(i+2).setUsed(true);
+                cardList.get(i+3).setUsed(true);
+                cardList.get(i+4).setUsed(true);
                 return true;
             }
         }
