@@ -39,6 +39,10 @@ public class Game {
         if (turn == 0) {//유저가 선
             System.out.println("베팅하세요.");
             int firstBet = bet.nextInt();
+            while (firstBet>=player.getMoney()){
+                System.out.println("소지금이 부족합니다.");
+                firstBet = bet.nextInt();
+            }
             if (firstBet==0){
                 isDie=Printing.PLAYER_DIE;
             }else{
@@ -51,9 +55,6 @@ public class Game {
                 }else if (computerBetting==0){
                     isDie=Printing.COMPUTER_DIE;
                 }
-                else {
-                    printStatus(Printing.COMPUTER_RAISE, computerBetting - firstBet);
-                }
             }
         } else {//컴퓨터가 선
             int firstBet = computerBetting(1, 0);
@@ -63,11 +64,15 @@ public class Game {
                 SumOfMoney += computer.betting(firstBet);
                 printStatus(Printing.COMPUTER_BET,firstBet);
                 int nextBet = bet.nextInt();
+                while (firstBet>=player.getMoney()){
+                    System.out.println("소지금이 부족합니다.");
+                    firstBet = bet.nextInt();
+                }
                 if (nextBet == 0) {
                     isDie = Printing.PLAYER_DIE;
                 } else {
-                    while (nextBet < firstBet) {
-                        System.out.println(firstBet + "만원 이상 베팅을 해야 합니다.");
+                    while (nextBet < firstBet||nextBet>player.getMoney()) {
+                        System.out.println(firstBet + "만원 이상 "+player.getMoney()+"만원 이하 베팅을 해야 합니다.");
                         nextBet = bet.nextInt();
                     }
                     SumOfMoney += player.betting(nextBet);
@@ -84,21 +89,15 @@ public class Game {
     }
 
     public int computerBetting(int turn, int firstBet) {
-        int bettingMoney;
-        HandRank handRank;
-        handRank = this.evaluator.evaluate(computer.getHand().getCardList());
-
-        if (computer.getHand().getCardList().size() < 5)
-        {
-            bettingMoney = (turn == 0 ) ? firstBet : (int)Math.random() * 1000;
-            return bettingMoney;
-        }
-        if (turn == 1) {
-            bettingMoney = (handRank.getRankOfHand() > 2) ?
-                    (handRank.getRankOfHand() > 8) ?
-                            firstBet * 2 : firstBet : 0;
-        } else {
-            bettingMoney = (int) Math.random() * 100;
+        int bettingMoney=firstBet;
+        int computerRank = this.evaluator.evaluate(computer.getHand().getCardList()).getRankOfHand();
+        int playerRank = this.evaluator.evaluate(player.getHand().getDisplayedCard()).getRankOfHand();
+        if (turn==0){
+            if (computer.getHand().getCardList().size()>5||computerRank<playerRank){
+                bettingMoney=0;
+            }
+        }else {
+            bettingMoney= computerRank*(computer.getMoney()/100);
         }
         return bettingMoney;
     }
@@ -159,6 +158,15 @@ public class Game {
                 computer.getHand().CardAddtion(1);
                 printStatus(Printing.CARDS_IN_TABLE, 0);
                 bettingTime(evaluating(player.getHand().getDisplayedCard(), player.getHand().getDisplayedCard()));
+                if (i==3&&isDie==Printing.COMPUTER_DIE){
+                    printStatus(Printing.COMPUTER_DIE,0);
+                    player.won(SumOfMoney);
+                    break;
+                }else if (i==3&&isDie==Printing.PLAYER_DIE){
+                    printStatus(Printing.PLAYER_DIE,0);
+                    computer.won(SumOfMoney);
+                    break;
+                }
             }else if (isDie==Printing.PLAYER_DIE){//유저가 죽은 경우
                 printStatus(Printing.PLAYER_DIE,0);
                 computer.won(SumOfMoney);
@@ -170,6 +178,7 @@ public class Game {
             }
         }
         if (isDie==Printing.DEFAULT){
+            printStatus(Printing.CARDS_OPENED,0);
             if (evaluating(player.getHand().getCardList(),computer.getHand().getCardList())==0){
                 printStatus(Printing.PLAYER_WIN,0);
                 player.won(SumOfMoney);
@@ -177,6 +186,8 @@ public class Game {
                 printStatus(Printing.COMPUTER_WIN,0);
                 computer.won(SumOfMoney);
             }
+            System.out.println("----------------------< Computer : "+evaluator.evaluate(computer.getHand().getCardList())+
+                    " >\t\t< Player : "+evaluator.evaluate(player.getHand().getCardList())+" >----------------------");
         }
 
         SumOfMoney=0;
@@ -184,10 +195,10 @@ public class Game {
     }
 
     public int evaluating(List<Card> playerList, List<Card> computerList) {
-        //int playerRank = evaluator.evaluate(playerList).getRankOfHand();
-        //int computerRank = evaluator.evaluate(computerList).getRankOfHand();
-        int playerRank=1;
-        int computerRank=0;
+        int playerRank = evaluator.evaluate(playerList).getRankOfHand();
+        int computerRank = evaluator.evaluate(computerList).getRankOfHand();
+        //int playerRank=1;
+        //int computerRank=0;
 
         if (playerRank > computerRank) {
             return 0;
