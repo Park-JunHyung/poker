@@ -10,9 +10,11 @@ import java.util.*;
  * Created by cse on 2017-04-17.
  */
 public class Evaluator {
-    public HandRank evaluate(List<Card> cardList) {
-        Map<Suit, Integer> suitMap = makeSuitMap(cardList);
-        Map<Integer, Integer> rankMap = makeRankMap(cardList);
+    public HandRank evaluate(List<Card> cards) {
+        Map<Suit, Integer> suitMap = makeSuitMap(cards);
+        Map<Integer, Integer> rankMap = makeRankMap(cards);
+        List<Card> cardList = new ArrayList<>();
+        cardList.addAll(cards);
         Suit flushKey = null;
 
         for (Suit key : suitMap.keySet()) {

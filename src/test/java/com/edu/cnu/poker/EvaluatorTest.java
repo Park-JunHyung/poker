@@ -6,6 +6,7 @@ import com.edu.cnu.poker.DataObject.Suit;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -239,7 +240,7 @@ public class EvaluatorTest {
         );
         evaluator.evaluate(cardList);
         List<Card> usedCardList = evaluator.usedCardLIst(cardList);
-
+        Collections.sort(usedCardList);
         assertThat(usedCardList,is(Arrays.asList(
                 new Card(4, Suit.CLUBS,true),
                 new Card(5,Suit.CLUBS,true),
@@ -262,7 +263,7 @@ public class EvaluatorTest {
         );
         evaluator.evaluate(cardList);
         List<Card> usedCardList = evaluator.usedCardLIst(cardList);
-
+        Collections.sort(usedCardList);
         assertThat(usedCardList,is(Arrays.asList(
                 new Card(4,Suit.CLUBS,true),
                 new Card(6,Suit.CLUBS,true),
