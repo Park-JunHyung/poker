@@ -45,17 +45,19 @@ public class Game {
                 SumOfMoney += player.betting(firstBet);
                 printStatus(Printing.PLAYER_BET,firstBet);
                 //AI미구현
-                SumOfMoney += computer.betting(firstBet);
-                printStatus(Printing.COMPUTER_CALL,0);
+                int computerBetting = computerBetting(turn, firstBet);
+                printStatus(Printing.COMPUTER_BET,computerBetting);
+                SumOfMoney += computer.betting(computerBetting);
+                if (computerBetting == firstBet) printStatus(Printing.COMPUTER_CALL,0);
+                else printStatus(Printing.COMPUTER_RAISE,computerBetting - firstBet);
             }
         } else {//컴퓨터가 선
-            //int firstBet = (int) Math.random() * 1000; //컴퓨터 베팅 임시 설정
-            int firstBet = 600;//컴퓨터 베팅 임시설정
+            int firstBet = computerBetting(1, 0);
             if (firstBet==0){
                 isDie=Printing.COMPUTER_DIE;
             } else {
                 SumOfMoney += computer.betting(firstBet);
-                printStatus(Printing.COMPUTER_BET, firstBet);
+                printStatus(Printing.COMPUTER_BET,firstBet);
                 int nextBet = bet.nextInt();
                 if (nextBet == 0) {
                     isDie = Printing.PLAYER_DIE;
@@ -75,6 +77,26 @@ public class Game {
                 }
             }
         }
+    }
+
+    public int computerBetting(int turn, int firstBet) {
+        int bettingMoney;
+        HandRank handRank;
+        handRank = this.evaluator.evaluate(computer.getHand().getCardList());
+
+        if (computer.getHand().getCardList().size() < 5)
+        {
+            bettingMoney = (turn == 1 ) ? firstBet : (int)Math.random() * 1000;
+            return bettingMoney;
+        }
+        if (turn == 0) {
+            bettingMoney = (handRank.getRankOfHand() > 2) ?
+                    (handRank.getRankOfHand() > 8) ?
+                            firstBet * 2 : firstBet : 0;
+        } else {
+            bettingMoney = (int) Math.random() * 100;
+        }
+        return bettingMoney;
     }
 
     public void printStatus(Printing choice, int output) {
@@ -122,6 +144,7 @@ public class Game {
                 break;
         }
     }
+  
     public void runSevenPokerGame(int startMoney){
         isDie=Printing.DEFAULT;
         enterNewGame(startMoney,3);

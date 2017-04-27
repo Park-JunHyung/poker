@@ -1,5 +1,7 @@
 package com.edu.cnu.poker;
 
+
+import com.edu.cnu.poker.DataObject.HandRank;
 import com.edu.cnu.poker.DataObject.PokerType;
 import org.junit.Test;
 
@@ -85,5 +87,13 @@ public class GameTest {
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
         game.runSevenPokerGame(100);
+
+    }
+
+    @Test
+    public void 컴퓨터_패가_좋으면_레이즈(){
+        Game game = new Game(10000, PokerType.SEVEN);
+        int bettingMoney = game.computerBetting(1,500);
+        assert(bettingMoney >= 500);
     }
 }
