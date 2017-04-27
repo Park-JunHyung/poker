@@ -27,19 +27,19 @@ public class Evaluator {
             return HandRank.StraightFlush;
         } else if (isFourCard(cardList, rankMap)) {
             return HandRank.FourCard;
-        } else if (isFullHouse(cardList,rankMap)) {
+        } else if (isFullHouse(cardList, rankMap)) {
             return HandRank.FullHouse;
         } else if (isFlush(cardList, flushKey)) {
             return HandRank.Flush;
-        } else if (isMountain(cardList,rankMap)) {
+        } else if (isMountain(cardList, rankMap)) {
             return HandRank.Mountain;
         } else if (isStraight(cardList, rankMap)) {
             return HandRank.Straight;
-        } else if (isTriple(cardList,rankMap)) {
+        } else if (isTriple(cardList, rankMap)) {
             return HandRank.Triple;
-        } else if (isTwoPair(cardList,rankMap)) {
+        } else if (isTwoPair(cardList, rankMap)) {
             return HandRank.TwoPair;
-        } else if (isOnePair(cardList,rankMap)) {
+        } else if (isOnePair(cardList, rankMap)) {
             return HandRank.OnePair;
         }
         return HandRank.Top;
@@ -53,17 +53,17 @@ public class Evaluator {
         return playerLisst.stream().mapToInt(o -> o.getSuit().getRankOfSuit()).sum();
     }
 
-    public List<Card> usedCardLIst(List<Card> cardList){
+    public List<Card> usedCardLIst(List<Card> cardList) {
         List<Card> usedCardList = new ArrayList<>();
-        for(int i = 0;i<cardList.size();i++){
-            if(cardList.get(i).getUsed())
+        for (int i = 0; i < cardList.size(); i++) {
+            if (cardList.get(i).getUsed())
                 usedCardList.add(cardList.get(i));
         }
         return usedCardList;
     }
 
     private boolean isMountain(List<Card> cardList, Map<Integer, Integer> rankMap) {
-        if(cardList.size()<5) return false;
+        if (cardList.size() < 5) return false;
         if (rankMap.containsKey(1) &&
                 rankMap.containsKey(10) &&
                 rankMap.containsKey(11) &&
@@ -76,7 +76,7 @@ public class Evaluator {
     }
 
     private boolean isOnePair(List<Card> cardList, Map<Integer, Integer> rankMap) {
-        if(cardList.size()<2) return false;
+        if (cardList.size() < 2) return false;
         for (Integer key : rankMap.keySet()) {
             if (rankMap.get(key) == 2) {
                 return true;
@@ -86,7 +86,7 @@ public class Evaluator {
     }
 
     private boolean isTwoPair(List<Card> cardList, Map<Integer, Integer> rankMap) {
-        if(cardList.size()<4) return false;
+        if (cardList.size() < 4) return false;
         int count = 0;
         for (Integer key : rankMap.keySet()) {
             if (rankMap.get(key) == 2) {
@@ -98,7 +98,7 @@ public class Evaluator {
     }
 
     private boolean isTriple(List<Card> cardList, Map<Integer, Integer> rankMap) {
-        if(cardList.size()<3) return false;
+        if (cardList.size() < 3) return false;
         for (Integer key : rankMap.keySet()) {
             if (rankMap.get(key) == 3) {
                 return true;
@@ -108,7 +108,7 @@ public class Evaluator {
     }
 
     private boolean isStraight(List<Card> cardList, Map<Integer, Integer> rankMap) {
-        if(cardList.size()<5) return false;
+        if (cardList.size() < 5) return false;
         Collections.sort(cardList);
         for (int i = 0; i < 3; i++) {
             if (cardList.get(i).getRank() > 10) break;
@@ -124,12 +124,12 @@ public class Evaluator {
     }
 
     private boolean isFullHouse(List<Card> cardList, Map<Integer, Integer> rankMap) {
-        if(cardList.size()<5) return false;
+        if (cardList.size() < 5) return false;
         return isOnePair(cardList, rankMap) && isTriple(cardList, rankMap);
     }
 
     private boolean isFourCard(List<Card> cardList, Map<Integer, Integer> rankMap) {
-        if(cardList.size()<4) return false;
+        if (cardList.size() < 4) return false;
         for (Integer key : rankMap.keySet()) {
             if (rankMap.get(key) >= 4) {
                 return true;
@@ -139,24 +139,40 @@ public class Evaluator {
     }
 
     private boolean isFlush(List<Card> cardList, Suit key) {
-        if(cardList.size()<5) return false;
-        if (key == null) return false;
-        return true;
+        if (cardList.size() < 5) return false;
+        if (key == null) { return false; }
+
+        if (cardList.contains(new Card(1, key))) {
+            cardList.get(cardList.indexOf(new Card(1, key))).setUsed(true);
+            for (int i = 13; i > 1; i--) {
+                if (cardList.contains(new Card(i, key))) {
+                    cardList.get(cardList.indexOf(new Card(i, key))).setUsed(true);
+                }
+            }
+            return true;
+        } else {
+            for (int i = 13; i > 1; i--) {
+                if (cardList.contains(new Card(i, key))) {
+                    cardList.get(cardList.indexOf(new Card(i, key))).setUsed(true);
+                }
+            }
+            return true;
+        }
     }
 
     private boolean isRoyalStraightFlush(List<Card> cardList, Suit key) {
-        if(cardList.size()<5) return false;
+        if (cardList.size() < 5) return false;
         if (key == null) return false;
         if (cardList.contains(new Card(1, key)) &&
                 cardList.contains(new Card(10, key)) &&
                 cardList.contains(new Card(11, key)) &&
                 cardList.contains(new Card(12, key)) &&
                 cardList.contains(new Card(13, key))) {
-            cardList.get(cardList.indexOf(new Card(1,key))).setUsed(true);
-            cardList.get(cardList.indexOf(new Card(10,key))).setUsed(true);
-            cardList.get(cardList.indexOf(new Card(11,key))).setUsed(true);
-            cardList.get(cardList.indexOf(new Card(12,key))).setUsed(true);
-            cardList.get(cardList.indexOf(new Card(13,key))).setUsed(true);
+            cardList.get(cardList.indexOf(new Card(1, key))).setUsed(true);
+            cardList.get(cardList.indexOf(new Card(10, key))).setUsed(true);
+            cardList.get(cardList.indexOf(new Card(11, key))).setUsed(true);
+            cardList.get(cardList.indexOf(new Card(12, key))).setUsed(true);
+            cardList.get(cardList.indexOf(new Card(13, key))).setUsed(true);
             return true;
         }
         return false;
@@ -164,7 +180,7 @@ public class Evaluator {
 
 
     private boolean isStraightFlush(List<Card> cardList, Suit key) {
-        if(cardList.size()<5) return false;
+        if (cardList.size() < 5) return false;
         if (key == null) return false;
         Collections.sort(cardList);
         for (int i = 0; i < 3; i++) {
@@ -178,10 +194,10 @@ public class Evaluator {
                             new Card(cardList.get(i).getRank() + 4, key)
                     ))) {
                 cardList.get(i).setUsed(true);
-                cardList.get(i+1).setUsed(true);
-                cardList.get(i+2).setUsed(true);
-                cardList.get(i+3).setUsed(true);
-                cardList.get(i+4).setUsed(true);
+                cardList.get(i + 1).setUsed(true);
+                cardList.get(i + 2).setUsed(true);
+                cardList.get(i + 3).setUsed(true);
+                cardList.get(i + 4).setUsed(true);
                 return true;
             }
         }

@@ -239,13 +239,37 @@ public class EvaluatorTest {
         );
         evaluator.evaluate(cardList);
         List<Card> usedCardList = evaluator.usedCardLIst(cardList);
-        
+
         assertThat(usedCardList,is(Arrays.asList(
                 new Card(4, Suit.CLUBS,true),
                 new Card(5,Suit.CLUBS,true),
                 new Card(6,Suit.CLUBS,true),
                 new Card(7,Suit.CLUBS,true),
                 new Card(8,Suit.CLUBS,true)
+        )));
+    }
+    @Test
+    public void 플러시_사용된_카드_확인() {
+        Evaluator evaluator = new Evaluator();
+        List<Card> cardList = Arrays.asList(
+                new Card(13, Suit.CLUBS),
+                new Card(1,Suit.SPADES),
+                new Card(8,Suit.CLUBS),
+                new Card(10,Suit.CLUBS),
+                new Card(11,Suit.CLUBS),
+                new Card(6,Suit.CLUBS),
+                new Card(4,Suit.CLUBS)
+        );
+        evaluator.evaluate(cardList);
+        List<Card> usedCardList = evaluator.usedCardLIst(cardList);
+
+        assertThat(usedCardList,is(Arrays.asList(
+                new Card(4,Suit.CLUBS,true),
+                new Card(6,Suit.CLUBS,true),
+                new Card(8,Suit.CLUBS,true),
+                new Card(10,Suit.CLUBS,true),
+                new Card(11,Suit.CLUBS,true),
+                new Card(13, Suit.CLUBS,true)
         )));
     }
 }
