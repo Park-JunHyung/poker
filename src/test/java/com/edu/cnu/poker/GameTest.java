@@ -29,14 +29,7 @@ public class GameTest {
 
     }
 
-    @Test
-    public void 까진_패를_비교후에_높은사람부터_시작(){
-        Game game=new Game(10000,PokerType.SEVEN);
-        game.enterNewGame(100,3);
-        int result=game.evaluating(game.getPlayer().getHand().getDisplayedCard(),game.getComputer().getHand().getDisplayedCard());
-        assertThat(result,is(1));
 
-    }
 
     @Test
     public void  사용자가_500만원_먼저_걸면_컴퓨터가_콜을한다(){
@@ -72,14 +65,7 @@ public class GameTest {
         assertThat(game.getSumOfMoney(),is(1800));
     }
 
-    @Test
-    public void 세븐포커_7장씩_패를_받고_마지막_베팅을_한다음_비교후_이긴사람이_다먹는다(){
-        Game game=new Game(10000,PokerType.SEVEN);
-        String input = "800";
-        InputStream in = new ByteArrayInputStream(input.getBytes());
-        System.setIn(in);
-        game.runSevenPokerGame(100);
-    }
+
     @Test
     public void 플레이어가_다이하면_패배(){
         Game game=new Game(10000,PokerType.SEVEN);
@@ -89,11 +75,28 @@ public class GameTest {
         game.runSevenPokerGame(100);
 
     }
+    /*
+    @Test
+    public void 세븐포커_7장씩_패를_받고_마지막_베팅을_한다음_비교후_이긴사람이_다먹는다(){
+        Game game=new Game(10000,PokerType.SEVEN);
+        String input = "800";
+        InputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+        game.runSevenPokerGame(100);
+    }
+    @Test
+    public void 까진_패를_비교후에_높은사람부터_시작(){
+        Game game=new Game(10000,PokerType.SEVEN);
+        game.enterNewGame(100,3);
+        int result=game.evaluating(game.getPlayer().getHand().getDisplayedCard(),game.getComputer().getHand().getDisplayedCard());
+        assertThat(result,is(1));
 
+    }
     @Test
     public void 컴퓨터_패가_좋으면_레이즈(){
         Game game = new Game(10000, PokerType.SEVEN);
         int bettingMoney = game.computerBetting(1,500);
         assert(bettingMoney >= 500);
     }
+    */
 }
