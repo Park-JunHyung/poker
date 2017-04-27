@@ -41,12 +41,13 @@ public class Game {
             SumOfMoney += player.betting(firstBet);
             printStatus(Printing.PLAYER_BET,firstBet);
             //AI미구현
-
-            SumOfMoney += computer.betting(firstBet);
-            printStatus(Printing.COMPUTER_CALL,0);
+            int computerBetting = computerBetting(turn, firstBet);
+            printStatus(Printing.COMPUTER_BET,computerBetting);
+            SumOfMoney += computer.betting(computerBetting);
+            if (computerBetting == firstBet) printStatus(Printing.COMPUTER_CALL,0);
+            else printStatus(Printing.COMPUTER_RAISE,computerBetting - firstBet);
         } else {//컴퓨터가 선
-            //int firstBet = (int) Math.random() * 1000; //컴퓨터 베팅 임시 설정
-            int firstBet = 600;//컴퓨터 베팅 임시설정
+            int firstBet = computerBetting(1, 0);
             SumOfMoney += computer.betting(firstBet);
             printStatus(Printing.COMPUTER_BET,firstBet);
             int nextBet = bet.nextInt();
