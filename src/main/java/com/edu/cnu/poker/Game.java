@@ -89,15 +89,17 @@ public class Game {
     }
 
     public int computerBetting(int turn, int firstBet) {
-        int bettingMoney=firstBet;
+        int bettingMoney = firstBet;
         int computerRank = this.evaluator.evaluate(computer.getHand().getCardList()).getRankOfHand();
         int playerRank = this.evaluator.evaluate(player.getHand().getDisplayedCard()).getRankOfHand();
-        if (turn==0){
-            if (computer.getHand().getCardList().size()>5||computerRank<playerRank){
-                bettingMoney=0;
+        if (turn == 0) {
+            if (computer.getHand().getCardList().size() > 5 || computerRank < playerRank) {
+                bettingMoney = 0;
             }
-        }else {
-            bettingMoney= computerRank*(computer.getMoney()/100);
+        } else {
+            bettingMoney = computerRank * (computer.getMoney() / 100) > computer.getMoney() ?
+                    computer.getMoney() : computerRank * (computer.getMoney() / 100);
+
         }
         return bettingMoney;
     }
@@ -192,6 +194,9 @@ public class Game {
 
         SumOfMoney=0;
         printStatus(Printing.DEFAULT,0);
+        Deck deck=new Deck(1);
+        setPlayer(new Player(player.getMoney(), new Hand(deck, PokerType.SEVEN)));
+        setComputer(new Player(computer.getMoney(), new Hand(deck, PokerType.SEVEN)));
     }
 
     public int evaluating(List<Card> playerList, List<Card> computerList) {

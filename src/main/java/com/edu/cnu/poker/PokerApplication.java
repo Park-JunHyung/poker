@@ -25,10 +25,10 @@ public class PokerApplication {
             if (regame.nextInt()==1){
                 System.out.println("Round "+round++);
                 game.runSevenPokerGame(100);
-            }else
+            } else {
                 System.out.println("종료");
-
-
+                break;
+            }
         }
 
     }
