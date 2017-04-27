@@ -32,7 +32,7 @@ public class Game {
         printStatus(Printing.CARDS_IN_TABLE,0);
     }
 
-    public void betting(int turn) {
+    public void bettingTime(int turn) {
 
         Scanner bet = new Scanner(System.in);
         if (turn == 1) {//유저가 선
@@ -41,6 +41,7 @@ public class Game {
             SumOfMoney += player.betting(firstBet);
             printStatus(Printing.PLAYER_BET,firstBet);
             //AI미구현
+
             SumOfMoney += computer.betting(firstBet);
             printStatus(Printing.COMPUTER_CALL,0);
         } else {//컴퓨터가 선
@@ -63,6 +64,23 @@ public class Game {
             } else
                 printStatus(Printing.PLAYER_CALL,0);
         }
+    }
+
+    public int computerBetting(int turn, int firstBet) {
+        int bettingMoney;
+        HandRank handRank;
+        handRank = this.evaluator.evaluate(computer.getHand().getCardList());
+
+        if (turn == 1) {
+            bettingMoney = (handRank.getRankOfHand() > 2) ?
+                    (handRank.getRankOfHand() > 8) ?
+                            firstBet * 2 : firstBet : 0;
+        } else {
+            bettingMoney = (handRank.getRankOfHand() > 2) ?
+                    (handRank.getRankOfHand() > 8) ?
+                            firstBet *2 : firstBet : 0;
+        }
+        return bettingMoney;
     }
 
     public void printStatus(Printing choice, int output) {
@@ -103,15 +121,16 @@ public class Game {
                 break;
         }
     }
-    public void SevenPokerGame(int startMoney){
+
+    public void sevenPokerGame(int startMoney){
         enterNewGame(startMoney,3);
-        betting(evaluating(player.getHand().getDisplayedCard(),player.getHand().getDisplayedCard()));
+        bettingTime(evaluating(player.getHand().getDisplayedCard(),player.getHand().getDisplayedCard()));
         //오프닝 후 첫번째 베팅
         for (int i=0;i<4;i++){
             player.getHand().CardAddtion(1);
             computer.getHand().CardAddtion(1);
             printStatus(Printing.CARDS_IN_TABLE,0);
-            betting(evaluating(player.getHand().getDisplayedCard(),player.getHand().getDisplayedCard()));
+            bettingTime(evaluating(player.getHand().getDisplayedCard(),player.getHand().getDisplayedCard()));
         }
         if (evaluating(player.getHand().getCardList(),computer.getHand().getCardList())==0){
             printStatus(Printing.PLAYER_WIN,0);
