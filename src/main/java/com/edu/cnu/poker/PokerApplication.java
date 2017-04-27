@@ -16,6 +16,6 @@ public class PokerApplication {
     public static void main(String[] args) {
         //testApplication
         Game game=new Game(10000, PokerType.SEVEN);
-        game.SevenPokerGame(100);
+        game.runSevenPokerGame(100);
     }
 }
